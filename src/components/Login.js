@@ -1,12 +1,12 @@
 import React from 'react';
-import './App.css';
+import '../css/Login.css';
 import Container from 'react-bootstrap/Container';
 import { Row, Col } from 'react-bootstrap';
 import GoogleButton from 'react-google-button';
 
-const App = () => {
+const Login = () => {
   return (
-    <div className='App'>
+    <div className='Login'>
       <Container>
         <Row>
           <Col xs={1} sm={3} />
@@ -24,4 +24,4 @@ const App = () => {
   );
 }
 
-export default App;
+export default Login;
