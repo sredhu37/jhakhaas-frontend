@@ -1,5 +1,4 @@
 import React from 'react';
-import '../css/Login.css';
 import Container from 'react-bootstrap/Container';
 import { Row, Col } from 'react-bootstrap';
 import GoogleButton from 'react-google-button';

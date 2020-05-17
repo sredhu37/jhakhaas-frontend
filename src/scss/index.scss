@@ -1,0 +1,34 @@
+// Import from other files
+@import 'variables';
+@import 'mixins';
+
+// Handling themes
+@if $theme == "blue" {
+  $bodyHtmlBackgroundImage: "../static/bg_login2.jpg";
+  $hrBorderColor: black;
+}
+
+@if $theme == "transparent" {
+  $bodyHtmlBackgroundImage: "../static/bg_login1.jpg";
+  $hrBorderColor: white;
+}
+
+// styles
+body, html {
+  text-align: center;
+  height: 100%;
+  margin: 0;
+
+  background-image: url($bodyHtmlBackgroundImage);
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+hr {
+  border: 1px solid $hrBorderColor;
+}
+
+@import 'Login';

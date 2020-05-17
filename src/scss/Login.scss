@@ -1,0 +1,38 @@
+// Styles specific to Login component should be in this page
+
+// Handling themes
+@if $theme == "blue" {
+    $loginBorder: none;
+    $loginMainGridItemBackgroundColor: white;
+    $loginColor: black;
+    $loginOpacity: 0.9;
+}
+
+@if $theme == "transparent" {
+    $loginBorder: 3px solid white;
+    $loginMainGridItemBackgroundColor: transparent;
+    $loginColor: white;
+    $loginOpacity: 1;
+}
+
+.Login {
+    border: none;
+    padding: 10px;
+    padding-top: 10%;
+    color: $loginColor;
+    opacity: $loginOpacity;
+}
+
+.LoginMainGridItem {
+    background-color: $loginMainGridItemBackgroundColor;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    -moz-box-shadow: 10px 10px 10px 0px rgba(0,0,0,0.3);
+    -webkit-box-shadow: 10px 10px 10px 0px rgba(0,0,0,0.3);
+    box-shadow: 10px 10px 10px 0px rgba(0,0,0,0.3);
+    border: 3px solid white;
+}
+
+.GoogleLoginButton {
+    margin: auto;
+}

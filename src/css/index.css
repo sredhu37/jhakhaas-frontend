@@ -2,11 +2,33 @@ body, html {
   text-align: center;
   height: 100%;
   margin: 0;
-
-  background-image: url('../static/bg_login2.jpg');
-
+  background-image: url("../static/bg_login1.jpg");
   /* Center and scale the image nicely */
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+hr {
+  border: 1px solid white;
+}
+
+.Login {
+  border: none;
+  padding: 10px;
+  padding-top: 10%;
+  color: white;
+  opacity: 1;
+}
+
+.LoginMainGridItem {
+  background-color: transparent;
+  padding-top: 2em;
+  padding-bottom: 2em;
+  box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.3);
+  border: 3px solid white;
+}
+
+.GoogleLoginButton {
+  margin: auto;
 }
