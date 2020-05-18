@@ -1,6 +1,7 @@
 import React from 'react';
 
-const Question = () => {
+const Question = (props) => {
+  console.log(props.jwt);
   return(
     <div className='Question'>
       Today's Question

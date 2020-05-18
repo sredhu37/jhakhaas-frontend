@@ -6,16 +6,19 @@
 @if $theme == "blue" {
   $bodyHtmlBackgroundImage: "../static/bg_login2.jpg";
   $hrBorderColor: black;
+  $commonTextColor: black;
 }
 
 @if $theme == "transparent" {
   $bodyHtmlBackgroundImage: "../static/bg_login1.jpg";
   $hrBorderColor: white;
+  $commonTextColor: white;
 }
 
 // styles
 body, html {
   text-align: center;
+  color: $commonTextColor;
   height: 100%;
   margin: 0;
 

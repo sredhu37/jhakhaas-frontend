@@ -1,5 +1,6 @@
 body, html {
   text-align: center;
+  color: white;
   height: 100%;
   margin: 0;
   background-image: url("../static/bg_login1.jpg");
@@ -25,6 +26,8 @@ hr {
   background-color: transparent;
   padding-top: 2em;
   padding-bottom: 2em;
+  -moz-box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.3);
   box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.3);
   border: 3px solid white;
 }
