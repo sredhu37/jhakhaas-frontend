@@ -65,7 +65,7 @@ const Login = (props) => {
 
   return (
     <div className="Login">
-      <Container>
+      <Container fluid>
         <Row>
         <Col xs={1} sm={3} />
         <Col xs={10} sm={6}>

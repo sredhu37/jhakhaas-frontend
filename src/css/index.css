@@ -38,3 +38,16 @@ hr {
   margin: auto;
   margin-bottom: 20px;
 }
+
+.containerColumn {
+  margin-top: 10vh;
+  margin-bottom: 10vh;
+  padding: 20px;
+  background: white;
+  text-align: center;
+  opacity: 0.8;
+  height: 80vh;
+  box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.3);
+  border: 3px solid white;
+  overflow: scroll;
+}
