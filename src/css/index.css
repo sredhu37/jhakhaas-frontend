@@ -1,9 +1,9 @@
 body, html {
   text-align: center;
-  color: white;
+  color: black;
   height: 100%;
   margin: 0;
-  background-image: url("../static/bg_login1.jpg");
+  background-image: url("../static/bg_login2.jpg");
   /* Center and scale the image nicely */
   background-position: center;
   background-repeat: no-repeat;
@@ -11,27 +11,30 @@ body, html {
 }
 
 hr {
-  border: 1px solid white;
+  border: 1px solid black;
 }
 
 .Login {
   border: none;
   padding: 10px;
   padding-top: 10%;
-  color: white;
-  opacity: 1;
+  color: black;
+  opacity: 0.9;
 }
 
 .LoginMainGridItem {
-  background-color: transparent;
+  background-color: white;
   padding-top: 2em;
   padding-bottom: 2em;
-  -moz-box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.3);
   box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.3);
   border: 3px solid white;
 }
 
 .GoogleLoginButton {
   margin: auto;
+}
+
+.MessageBox {
+  margin: auto;
+  margin-bottom: 20px;
 }
