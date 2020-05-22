@@ -38,7 +38,7 @@ const Login = (props) => {
   
       if (jwtToken.status === 200) {
         // console.log(`jwt token: ${jwtToken.data}`);
-        props.setJwt(jwtToken.data);
+        localStorage.setItem('jwt', jwtToken.data);
         history.push(`/question`);
       } else if (jwtToken.status === 401) {
         throw new Error("Incorrect username or password!");

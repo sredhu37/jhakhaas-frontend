@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Login from './Login';
 import Question from './Question';
 
 const App = () => {
-  const [jwt, setJwt] = useState("");
-
   return(
     <div>
       <Router>
@@ -17,7 +15,6 @@ const App = () => {
               props => (
                 <Login
                   {...props}
-                  setJwt={ setJwt }
                 />
               )
             }
@@ -28,7 +25,6 @@ const App = () => {
               props => (
                 <Question
                   {...props}
-                  jwt={ jwt }
                 />
               )
             }
