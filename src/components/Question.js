@@ -16,7 +16,8 @@ const Question = (props) => {
         'http://127.0.0.1:3001/api/questions/submit',
         {
           question,
-          usersAnswer: selectedOptions
+          usersAnswer: selectedOptions,
+          token: localStorage.getItem('jwt')
         },
         { headers: { "auth-token": localStorage.getItem('jwt'),
        }}
