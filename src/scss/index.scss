@@ -1,0 +1,24 @@
+// Import from other files
+
+// styles
+body, html {
+  text-align: center;
+  color: black;
+  height: 100%;
+  margin: 0;
+
+  background-image: url("../static/bg_login2.jpg");
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+hr {
+  border: 1px solid black;
+}
+
+@import 'Login';
+@import 'MessageBox';
+@import 'Question';
