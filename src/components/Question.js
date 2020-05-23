@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import axios from 'axios';
+import MessageBox from './MessageBox';
 
 const Question = (props) => {
   const [ selectedOptions, setSelectedOptions ] = useState({a: false, b: false, c: false, d: false});
   const [ problemStatement, setProblemStatement ] = useState("");
   const [ options, setOptions ] = useState({a: "", b: "", c: "", d: ""});
   const [ question, setQuestion ] = useState();
+  const [ displayMessageBox, setDisplayMessageBox ] = useState(false);
+  const [ messageBoxText, setMessageBoxText ] = useState("");
+  const [ messageBoxVariant, setMessageBoxVariant ] = useState("danger");
 
   const submitAnswer = async (event) => {
     event.preventDefault();
@@ -19,23 +23,33 @@ const Question = (props) => {
           usersAnswer: selectedOptions,
           token: localStorage.getItem('jwt')
         },
-        { headers: { "auth-token": localStorage.getItem('jwt'),
-       }}
+        { headers: { "auth-token": localStorage.getItem('jwt')} }
       );
   
       if(answerResponse) {
-        if(answerResponse.status === 200) {
-          console.log('Correct answer');
-        } else if(answerResponse.status === 204) {
-          console.log('Incorrect answer');
-        } else {
-          throw new Error(`Unhandled Response status code: ${answerResponse.status}`);
+        switch(answerResponse.status) {
+          case 200:
+            setMessageBoxText('Correct answer');
+            setMessageBoxVariant('success');
+            break;
+          case 204:
+            setMessageBoxText('Incorrect answer');
+            setMessageBoxVariant('danger');
+            break;
+          case 208:
+            setMessageBoxText('Number of tries exceeded 3');
+            setMessageBoxVariant('danger');
+            break;
+          default:
+            throw new Error(`Unhandled Response status code: ${answerResponse.status}`);
         }
       }
     }
     catch(err) {
-      console.log("Error: ", err);
+      setMessageBoxText(err);
+      setMessageBoxVariant('danger');
     }
+    setDisplayMessageBox(true);
   };
 
   const handleSelections = (event) => {
@@ -102,6 +116,20 @@ const Question = (props) => {
 
   return (
     <div className="Question">
+      <Container fluid>
+        <Row>
+        <Col xs={1} sm={3} />
+        <Col xs={10} sm={6}>
+          <MessageBox
+            message={ messageBoxText }
+            variant={ messageBoxVariant }
+            displayMessageBox={ displayMessageBox }
+            setDisplayMessageBox={ setDisplayMessageBox }
+          />
+        </Col>
+        <Col xs={1} sm={3} />
+        </Row>
+      </Container>
       <Container fluid>
         <Row>
           <Col sm={1} xs={0} />
