@@ -1,21 +1,26 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 
-const Home = (props) => {
-  if(props.isLoggedIn) {
+const LoginOption = (props) => {
+  if(!props.isLoggedIn) {
     return(
-      <div>
-        Already logged in.
-      </div>
+      <Link to='/login'>
+        <Button>Login</Button>
+      </Link>
     );
   } else {
-    return(
-      <div>
-        This is home page.
-        <Link to='/login'>Login</Link>
-      </div>
-    );
+    return null;
   }
+};
+
+const Home = (props) => {
+  return(
+    <div>
+      This is home page.
+      <LoginOption isLoggedIn={props.isLoggedIn} />
+    </div>
+  );
 };
 
 export default Home;
