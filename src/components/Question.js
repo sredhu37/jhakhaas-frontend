@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import axios from 'axios';
+import SecureComponent from './SecureComponent';
 import MessageBox from './MessageBox';
 
 const Question = (props) => {
@@ -14,7 +15,7 @@ const Question = (props) => {
 
   const submitAnswer = async (event) => {
     event.preventDefault();
-    console.log(selectedOptions);
+
     try {
       const answerResponse = await axios.post(
         'http://127.0.0.1:3001/api/questions/submit',
@@ -29,7 +30,7 @@ const Question = (props) => {
       if(answerResponse) {
         switch(answerResponse.status) {
           case 200:
-            setMessageBoxText('Correct answer');
+            setMessageBoxText('Correct answer. Check your Profile for score!');
             setMessageBoxVariant('success');
             break;
           case 204:
@@ -100,7 +101,6 @@ const Question = (props) => {
         setQuestion(questionObj);
   
         if(questionData.status === 200) {
-          console.log(`Question: `, questionObj);
           setProblemStatement(questionObj.problemStatement);
           setOptions(questionObj.options);
         } else {
@@ -114,37 +114,39 @@ const Question = (props) => {
     getTodaysQuestion();
   }, []);
 
-  return (
-    <div className="Question">
-      <Container fluid>
-        <Row>
-        <Col xs={1} sm={3} />
-        <Col xs={10} sm={6}>
-          <MessageBox
-            message={ messageBoxText }
-            variant={ messageBoxVariant }
-            displayMessageBox={ displayMessageBox }
-            setDisplayMessageBox={ setDisplayMessageBox }
-          />
-        </Col>
-        <Col xs={1} sm={3} />
-        </Row>
-      </Container>
-      <Container fluid>
-        <Row>
-          <Col sm={1} xs={0} />
-          <Col sm={10} xs={12} className="containerColumn">
-            Today's Question
-            <hr />
-            <p>{problemStatement}</p>
-            <br />
-            {getOptionsForm()}
-          </Col>
-          <Col sm={1} xs={0} />
-        </Row>
-      </Container>
-    </div>
-  );
+    return (
+      <SecureComponent isLoggedIn={props.isLoggedIn} component={
+        <div className="Question">
+          <Container fluid>
+            <Row>
+            <Col xs={1} sm={3} />
+            <Col xs={10} sm={6}>
+              <MessageBox
+                message={ messageBoxText }
+                variant={ messageBoxVariant }
+                displayMessageBox={ displayMessageBox }
+                setDisplayMessageBox={ setDisplayMessageBox }
+              />
+            </Col>
+            <Col xs={1} sm={3} />
+            </Row>
+          </Container>
+          <Container fluid>
+            <Row>
+              <Col sm={1} xs={0} />
+              <Col sm={10} xs={12} className="containerColumn">
+                Today's Question
+                <hr />
+                <p>{problemStatement}</p>
+                <br />
+                {getOptionsForm()}
+              </Col>
+              <Col sm={1} xs={0} />
+            </Row>
+          </Container>
+        </div>  
+      } />
+    );
 };
 
 export default Question;

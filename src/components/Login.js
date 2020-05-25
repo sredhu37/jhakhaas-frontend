@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Container from "react-bootstrap/Container";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 import MessageBox from './MessageBox';
 // imports end here
 
@@ -12,8 +12,8 @@ import MessageBox from './MessageBox';
 
 const Login = (props) => {
   // variables declaration begin here
-
   const history = useHistory();
+
   const [ email, setEmail ] = useState("");
   const [ password, setPassword ] = useState("");
   const [ displayMessageBox, setDisplayMessageBox ] = useState(false);
@@ -25,7 +25,6 @@ const Login = (props) => {
 
   const tryBasicLogin = async (event) => {
     event.preventDefault();
-    // console.log(`Email: ${email}, Password: ${password}`);
 
     try {
       const jwtToken = await axios.post(
@@ -35,17 +34,17 @@ const Login = (props) => {
           password: password,   // "Hello@123"
         }
       );
-  
+
       if (jwtToken.status === 200) {
-        // console.log(`jwt token: ${jwtToken.data}`);
         localStorage.setItem('jwt', jwtToken.data);
+        props.setIsLoggedIn(true);
         history.push(`/question`);
       } else if (jwtToken.status === 401) {
         throw new Error("Incorrect username or password!");
       }
     } catch(error) {
-      const msg = 'Incorrect username or password!';
-      console.log(msg);
+      const msg = (error.response) ? 'Incorrect username or password!' : error.toString();
+
       setMessageBoxText(msg);
       setDisplayMessageBox(true);
     }

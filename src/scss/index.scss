@@ -19,6 +19,15 @@ hr {
   border: 1px solid black;
 }
 
+.personPic {
+  height: 50px;
+  width: 50px;
+  &:hover {
+    cursor: pointer;
+    border: 1px solid #E9EAEE;
+  }
+}
+
 @import 'Login';
 @import 'MessageBox';
 @import 'Question';
