@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert } from "react-bootstrap";
+import { Alert, Container, Row, Col } from "react-bootstrap";
 
 const MessageBox = (props) => {
   const { message, variant, displayMessageBox, setDisplayMessageBox } = props;
