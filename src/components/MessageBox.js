@@ -8,9 +8,17 @@ const MessageBox = (props) => {
 
   if(displayMessageBox) {
     return (
-      <Alert className="MessageBox" variant={ variant } onClose={ handleClose } dismissible>
-        {message}
-      </Alert>
+      <Container fluid>
+        <Row>
+          <Col xs={1} sm={3} />
+          <Col xs={10} sm={6}>
+            <Alert className="MessageBox" variant={ variant } onClose={ handleClose } dismissible>
+              {message}
+            </Alert>
+          </Col>
+          <Col xs={1} sm={3} />
+        </Row>
+      </Container>
     );
   } else {
     return null;

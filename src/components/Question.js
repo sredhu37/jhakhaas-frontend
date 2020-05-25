@@ -117,20 +117,12 @@ const Question = (props) => {
     return (
       <SecureComponent isLoggedIn={props.isLoggedIn} component={
         <div className="Question">
-          <Container fluid>
-            <Row>
-            <Col xs={1} sm={3} />
-            <Col xs={10} sm={6}>
-              <MessageBox
-                message={ messageBoxText }
-                variant={ messageBoxVariant }
-                displayMessageBox={ displayMessageBox }
-                setDisplayMessageBox={ setDisplayMessageBox }
-              />
-            </Col>
-            <Col xs={1} sm={3} />
-            </Row>
-          </Container>
+          <MessageBox
+            message={ messageBoxText }
+            variant={ messageBoxVariant }
+            displayMessageBox={ displayMessageBox }
+            setDisplayMessageBox={ setDisplayMessageBox }
+          /> 
           <Container fluid>
             <Row>
               <Col sm={1} xs={0} />

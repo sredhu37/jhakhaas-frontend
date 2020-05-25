@@ -64,20 +64,12 @@ const Login = (props) => {
 
   return (
     <div className="Login">
-      <Container fluid>
-        <Row>
-        <Col xs={1} sm={3} />
-        <Col xs={10} sm={6}>
-          <MessageBox
-            message={ messageBoxText }
-            variant="danger"
-            displayMessageBox={ displayMessageBox }
-            setDisplayMessageBox={ setDisplayMessageBox }
-          />
-        </Col>
-        <Col xs={1} sm={3} />
-        </Row>
-      </Container>
+      <MessageBox
+        message={ messageBoxText }
+        variant="danger"
+        displayMessageBox={ displayMessageBox }
+        setDisplayMessageBox={ setDisplayMessageBox }
+      />
       <Container>
         <Row>
           <Col xs={1} sm={3} />
