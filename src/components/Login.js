@@ -1,10 +1,11 @@
 // imports begin here
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
-import { Row, Col, Form, Button } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import axios from "axios";
 import { useHistory } from 'react-router-dom';
+import GoogleButton from 'react-google-button';
 import MessageBox from './MessageBox';
 // imports end here
 
@@ -14,48 +15,39 @@ const Login = (props) => {
   // variables declaration begin here
   const history = useHistory();
 
-  const [ email, setEmail ] = useState("");
-  const [ password, setPassword ] = useState("");
   const [ displayMessageBox, setDisplayMessageBox ] = useState(false);
   const [ messageBoxText, setMessageBoxText ] = useState("");
 
   // variables declaration end here
 
-  // helper functions end here
+  // helper functions begin here
 
-  const tryBasicLogin = async (event) => {
+  const tryGoogleLogin = async (event) => {
     event.preventDefault();
+    window.open("http://127.0.0.1:4000/auth/google/login", "_self");
 
-    try {
-      const jwtToken = await axios.post(
-        "http://localhost:3001/auth/local/login",
-        {
-          email: email,  // "xykdsffgfdfjz@gmail.com"
-          password: password,   // "Hello@123"
-        }
-      );
+    // try {
+    //   const jwtToken = await axios.post(
+    //     "http://localhost:3001/auth/local/login",
+    //     {
+    //       email: email,  // "xykdsffgfdfjz@gmail.com"
+    //       password: password,   // "Hello@123"
+    //     }
+    //   );
 
-      if (jwtToken.status === 200) {
-        localStorage.setItem('jwt', jwtToken.data);
-        props.setIsLoggedIn(true);
-        history.push(`/question`);
-      } else if (jwtToken.status === 401) {
-        throw new Error("Incorrect username or password!");
-      }
-    } catch(error) {
-      const msg = (error.response) ? 'Incorrect username or password!' : error.toString();
+    //   if (jwtToken.status === 200) {
+    //     localStorage.setItem('jwt', jwtToken.data);
+    //     props.setIsLoggedIn(true);
+    //     history.push(`/question`);
+    //   } else if (jwtToken.status === 401) {
+    //     throw new Error("Incorrect username or password!");
+    //   }
+    // } catch(error) {
+    //   const msg = (error.response) ? 'Incorrect username or password!' : error.toString();
 
-      setMessageBoxText(msg);
-      setDisplayMessageBox(true);
-    }
-  };
-
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
+    //   setMessageBoxText(msg);
+    //   setDisplayMessageBox(true);
+    // }
   };
 
   // helper functions end here
@@ -76,20 +68,13 @@ const Login = (props) => {
           <Col className="LoginMainGridItem" xs={10} sm={6}>
             LOGIN
             <hr />
-            <Form>
-              <Form.Group controlId="formBasicEmail">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" value={ email } onChange={ handleEmailChange } />
-              </Form.Group>
-
-              <Form.Group controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" value={ password } onChange={ handlePasswordChange } />
-              </Form.Group>
-              <Button variant="primary" type="submit" onClick={ tryBasicLogin }>
-                Submit
-              </Button>
-            </Form>
+            <Row>
+            <Col xs={1} sm={3} />
+            <Col xs={10} sm={6}>
+              <GoogleButton onClick={ tryGoogleLogin } />
+            </Col>
+            <Col xs={1} sm={3} />
+            </Row>
           </Col>
           <Col xs={1} sm={3} />
         </Row>
