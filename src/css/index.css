@@ -23,26 +23,6 @@ hr {
   border: 1px solid #E9EAEE;
 }
 
-.Login {
-  border: none;
-  padding: 10px;
-  padding-top: 10%;
-  color: black;
-  opacity: 0.9;
-}
-
-.LoginMainGridItem {
-  background-color: white;
-  padding-top: 2em;
-  padding-bottom: 2em;
-  box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.3);
-  border: 3px solid white;
-}
-
-.GoogleLoginButton {
-  margin: auto;
-}
-
 .MessageBox {
   margin: auto;
   margin-bottom: 20px;

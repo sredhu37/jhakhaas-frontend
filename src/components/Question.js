@@ -5,6 +5,7 @@ import SecureComponent from './SecureComponent';
 import MessageBox from './MessageBox';
 
 const Question = (props) => {
+  console.log("sunny.question: ", props);
   const [ selectedOptions, setSelectedOptions ] = useState({a: false, b: false, c: false, d: false});
   const [ problemStatement, setProblemStatement ] = useState("");
   const [ options, setOptions ] = useState({a: "", b: "", c: "", d: ""});
@@ -21,10 +22,8 @@ const Question = (props) => {
         'http://127.0.0.1:3001/api/questions/submit',
         {
           question,
-          usersAnswer: selectedOptions,
-          token: localStorage.getItem('jwt')
-        },
-        { headers: { "auth-token": localStorage.getItem('jwt')} }
+          usersAnswer: selectedOptions
+        }
       );
   
       if(answerResponse) {
@@ -93,8 +92,7 @@ const Question = (props) => {
       const errMsg = `Issue in getting today's question. Inform Sunny!`;
       try {
         const questionData = await axios.get(
-          'http://127.0.0.1:3001/api/questions/today',
-          { headers: { "auth-token": localStorage.getItem('jwt') }}
+          'http://127.0.0.1:3001/api/questions/today'
         );
   
         const questionObj = questionData.data[0];

@@ -1,21 +1,22 @@
 import React from 'react';
-import { Navbar, Nav, Form, Image } from 'react-bootstrap';
-import { Link, useHistory } from 'react-router-dom';
+import { Navbar, Nav, Form, Image, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import personPic from '../static/nopic.png';
 
 const NavBar = (props) => {
-  const history = useHistory();
-
-  const handleLogout = (event) => {
+  const handleLogout = async (event) => {
     event.preventDefault();
-    // remove jwtToken from localStorage
-    localStorage.removeItem('jwt');
 
     // set isLoggedIn to false
     props.setIsLoggedIn(false);
 
-    // redirect to home
-    history.push('/');
+    window.open("http://127.0.0.1:4000/auth/logout", "_self");
+  };
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
+    window.open("http://127.0.0.1:4000/auth/google/login", "_self");
   };
 
   if(props.isLoggedIn) {
@@ -27,8 +28,8 @@ const NavBar = (props) => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link href="/question">Question</Nav.Link>
-            <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+            <Nav.Link as={Link} to='/question'>Question</Nav.Link>
+            <Nav.Link as={Link} to='/dashboard'>Dashboard</Nav.Link>
           </Nav>
           <Form inline>
             <Link to='/profile'>
@@ -39,7 +40,7 @@ const NavBar = (props) => {
               />
             </Link>
             <Nav className="mr-auto">
-              <Nav.Link onClick={handleLogout} >Logout</Nav.Link>
+              <Button variant="outline-info" onClick={handleLogout}>Logout</Button>
             </Nav>
           </Form>
         </Navbar.Collapse>
@@ -51,6 +52,14 @@ const NavBar = (props) => {
         <Link to="/">
           <Navbar.Brand>JhaKhaas</Navbar.Brand>
         </Link>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Form inline>
+            <Nav className="mr-xs-2">
+            <Button variant="outline-info" onClick={handleLogin}>Login</Button>
+            </Nav>
+          </Form>
+        </Navbar.Collapse>
       </Navbar>
     ); 
   }
