@@ -32,7 +32,7 @@ const App = () => {
             <Unauthorized isLoggedIn={isLoggedIn} />
           </Route>
           <Route path="/" exact>
-            <Home isLoggedIn={isLoggedIn} />
+            <Home isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
           </Route>
         </Switch>
       </Router>
