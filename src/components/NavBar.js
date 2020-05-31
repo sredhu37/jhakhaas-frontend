@@ -10,13 +10,13 @@ const NavBar = (props) => {
     // set isLoggedIn to false
     props.setIsLoggedIn(false);
 
-    window.open("http://127.0.0.1:4000/auth/logout", "_self");
+    window.open(`${process.env.REACT_APP_SERVER_URL}/auth/logout`, "_self");
   };
 
   const handleLogin = async (event) => {
     event.preventDefault();
 
-    window.open("http://127.0.0.1:4000/auth/google/login", "_self");
+    window.open(`${process.env.REACT_APP_SERVER_URL}/auth/google/login`, "_self");
   };
 
   if(props.isLoggedIn) {

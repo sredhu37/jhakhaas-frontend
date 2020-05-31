@@ -5,7 +5,6 @@ import SecureComponent from './SecureComponent';
 import MessageBox from './MessageBox';
 
 const Question = (props) => {
-  console.log("sunny.question: ", props);
   const [ selectedOptions, setSelectedOptions ] = useState({a: false, b: false, c: false, d: false});
   const [ problemStatement, setProblemStatement ] = useState("");
   const [ options, setOptions ] = useState({a: "", b: "", c: "", d: ""});
@@ -19,13 +18,14 @@ const Question = (props) => {
 
     try {
       const answerResponse = await axios.post(
-        'http://127.0.0.1:3001/api/questions/submit',
+        `${process.env.REACT_APP_SERVER_URL}/api/questions/submit`,
         {
           question,
           usersAnswer: selectedOptions
         }
       );
-  
+      console.log("sunny: ", answerResponse);
+
       if(answerResponse) {
         switch(answerResponse.status) {
           case 200:
@@ -92,7 +92,7 @@ const Question = (props) => {
       const errMsg = `Issue in getting today's question. Inform Sunny!`;
       try {
         const questionData = await axios.get(
-          'http://127.0.0.1:3001/api/questions/today'
+          `${process.env.REACT_APP_SERVER_URL}/api/questions/today`
         );
   
         const questionObj = questionData.data[0];
@@ -120,7 +120,7 @@ const Question = (props) => {
             variant={ messageBoxVariant }
             displayMessageBox={ displayMessageBox }
             setDisplayMessageBox={ setDisplayMessageBox }
-          /> 
+          />
           <Container fluid>
             <Row>
               <Col sm={1} xs={0} />

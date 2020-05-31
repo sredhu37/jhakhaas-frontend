@@ -9,7 +9,7 @@ const Home = (props) => {
   useEffect(() => {
     const checkIfLoggedIn = async () => {
       try {
-        await axios.get("http://127.0.0.1:4000/auth/isLoggedIn");
+        await axios.get(`${process.env.REACT_APP_SERVER_URL}/auth/isLoggedIn`);
         props.setIsLoggedIn(true);
         history.push("/profile");
       } catch(error) {
