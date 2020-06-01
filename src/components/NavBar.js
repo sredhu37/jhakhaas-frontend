@@ -35,7 +35,7 @@ const NavBar = (props) => {
             <Nav className="mr-auto">
               <Link to='/profile'>
                 <Image
-                  src={props.myPictureUrl ? props.myPictureUrl : personPic}
+                  src={props.myUser.pictureUrl ? props.myUser.pictureUrl : personPic}
                   roundedCircle
                   className="personPic"
                 />

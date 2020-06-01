@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useReducer } from 'react';
 import axios from 'axios';
 import { Table, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import SecureComponent from './SecureComponent';
@@ -33,6 +33,33 @@ const Dashboard = (props) => {
     return result;
   }
 
+  const loadMyData = () => {
+    const alreadyInTopLeaders = topLeaders.find(user => user._id === props.myUser._id);
+
+    if(alreadyInTopLeaders) {
+      return null;
+    } else {
+      return (
+        <tr key={props.myUser._id}>
+          <td>{props.myUser.rank}</td>
+          <td>
+            <OverlayTrigger
+              placement='right'
+              overlay={
+                <Tooltip>
+                  {props.myUser.email}
+                </Tooltip>
+              }
+            >
+              <img src={props.myUser.pictureUrl} className="dashboardImg"></img>
+            </OverlayTrigger>
+          </td>
+          <td>{props.myUser.totalScore}</td>
+        </tr>
+      );
+    }
+  }
+
   useEffect(() => {
     const getTop10List = async () => {
       try {
@@ -60,6 +87,7 @@ const Dashboard = (props) => {
           </thead>
           <tbody>
             {loadLeaders()}
+            {loadMyData()}
           </tbody>
         </Table>
       </div>

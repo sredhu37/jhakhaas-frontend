@@ -10,9 +10,7 @@ const Profile = (props) => {
       try {
         const profile = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/users/profile`);
         if(profile) {
-          props.setMyEmail(profile.data.email);
-          props.setMyPictureUrl(profile.data.pictureUrl);
-          props.setMyTotalScore(profile.data.totalScore);
+          props.setMyUser(profile.data);
         } else {
           throw new Error("Couldn't receive profile from the server. Inform Sunny immediately!")
         }
@@ -32,11 +30,11 @@ const Profile = (props) => {
             <Col xs={1} sm={3} />
             <Col xs={10} sm={6}>
             <Card className="profileCard">
-              <Card.Img variant="top" src={ props.myPictureUrl } className="profileImage" />
+              <Card.Img variant="top" src={ props.myUser.pictureUrl } className="profileImage" />
               <Card.Body>
-                <Card.Title>{ props.myEmail }</Card.Title>
+                <Card.Title>{ props.myUser.email }</Card.Title>
                 <Card.Text>
-                  My total score: { props.myTotalScore }
+                  My total score: { props.myUser.totalScore }
                 </Card.Text>
                 <Link to="/dashboard">
                   <Button variant="outline-info">Check your rank</Button>

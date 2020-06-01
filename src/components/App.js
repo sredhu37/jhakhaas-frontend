@@ -9,9 +9,7 @@ import Unauthorized from './Unauthorized';
 
 const App = () => {
   const [ isLoggedIn, setIsLoggedIn ] = useState(false);
-  const [ myEmail, setMyEmail ] = useState("");
-  const [ myPictureUrl, setMyPictureUrl ] = useState("");
-  const [ myTotalScore, setMyTotalScore ] = useState(0);
+  const [ myUser, setMyUser ] = useState({});
 
   return(
     <div>
@@ -19,7 +17,7 @@ const App = () => {
         <NavBar
           isLoggedIn={isLoggedIn}
           setIsLoggedIn={setIsLoggedIn}
-          myPictureUrl={myPictureUrl}
+          myUser={myUser}
         />
         <Switch>
           <Route path="/question">
@@ -28,20 +26,14 @@ const App = () => {
           <Route path="/profile">
             <Profile
               isLoggedIn={isLoggedIn}
-              myEmail={myEmail}
-              setMyEmail={setMyEmail}
-              myPictureUrl={myPictureUrl}
-              setMyPictureUrl={setMyPictureUrl}
-              myTotalScore={myTotalScore}
-              setMyTotalScore={setMyTotalScore}
+              myUser={myUser}
+              setMyUser={setMyUser}
             />
           </Route>
           <Route path="/dashboard">
             <Dashboard
               isLoggedIn={isLoggedIn}
-              myEmail={myEmail}
-              myPictureUrl={myPictureUrl}
-              myTotalScore={myTotalScore}
+              myUser={myUser}
             />
           </Route>
           <Route path="/unauthorized">
