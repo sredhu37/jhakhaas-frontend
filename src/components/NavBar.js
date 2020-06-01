@@ -32,13 +32,15 @@ const NavBar = (props) => {
             <Nav.Link as={Link} to='/dashboard'>Dashboard</Nav.Link>
           </Nav>
           <Form inline>
-            <Link to='/profile'>
-              <Image
-                src={personPic}
-                roundedCircle
-                className="personPic ml-xs-6 mr-sm-2"
-              />
-            </Link>
+            <Nav className="mr-auto">
+              <Link to='/profile'>
+                <Image
+                  src={props.myPictureUrl ? props.myPictureUrl : personPic}
+                  roundedCircle
+                  className="personPic"
+                />
+              </Link>
+            </Nav>
             <Nav className="mr-auto">
               <Button variant="outline-info" onClick={handleLogout}>Logout</Button>
             </Nav>
@@ -52,14 +54,11 @@ const NavBar = (props) => {
         <Link to="/">
           <Navbar.Brand>JhaKhaas</Navbar.Brand>
         </Link>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Form inline>
-            <Nav className="mr-xs-2">
+        <Form inline>
+          <Nav className="mr-auto">
             <Button variant="outline-info" onClick={handleLogin}>Login</Button>
-            </Nav>
-          </Form>
-        </Navbar.Collapse>
+          </Nav>
+        </Form>
       </Navbar>
     ); 
   }

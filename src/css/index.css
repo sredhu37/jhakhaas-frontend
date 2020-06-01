@@ -17,6 +17,7 @@ hr {
 .personPic {
   height: 50px;
   width: 50px;
+  margin-right: 10px;
 }
 .personPic:hover {
   cursor: pointer;
@@ -39,4 +40,18 @@ hr {
   box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.3);
   border: 3px solid white;
   overflow: scroll;
+}
+
+.profileCard {
+  opacity: 0.9;
+  margin: 5%;
+  padding: 5%;
+}
+
+.profileImage {
+  height: 100px;
+  width: 100px;
+  display: block;
+  margin: auto;
+  border-radius: 100%;
 }

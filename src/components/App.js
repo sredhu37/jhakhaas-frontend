@@ -9,17 +9,32 @@ import Unauthorized from './Unauthorized';
 
 const App = () => {
   const [ isLoggedIn, setIsLoggedIn ] = useState(false);
+  const [ myEmail, setMyEmail ] = useState("");
+  const [ myPictureUrl, setMyPictureUrl ] = useState("");
+  const [ myTotalScore, setMyTotalScore ] = useState(0);
 
   return(
     <div>
       <Router>
-        <NavBar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+        <NavBar
+          isLoggedIn={isLoggedIn}
+          setIsLoggedIn={setIsLoggedIn}
+          myPictureUrl={myPictureUrl}
+        />
         <Switch>
           <Route path="/question">
             <Question isLoggedIn={isLoggedIn} />
           </Route>
           <Route path="/profile">
-            <Profile isLoggedIn={isLoggedIn} />
+            <Profile
+              isLoggedIn={isLoggedIn} 
+              myEmail={myEmail}
+              setMyEmail={setMyEmail}
+              myPictureUrl={myPictureUrl}
+              setMyPictureUrl={setMyPictureUrl}
+              myTotalScore={myTotalScore}
+              setMyTotalScore={setMyTotalScore}
+            />
           </Route>
           <Route path="/dashboard">
             <Dashboard isLoggedIn={isLoggedIn} />

@@ -22,11 +22,14 @@ hr {
 .personPic {
   height: 50px;
   width: 50px;
+  margin-right: 10px;
   &:hover {
     cursor: pointer;
     border: 1px solid #E9EAEE;
   }
 }
 
+
 @import 'MessageBox';
 @import 'Question';
+@import 'Profile';
