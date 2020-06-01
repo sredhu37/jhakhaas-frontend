@@ -27,7 +27,7 @@ const App = () => {
           </Route>
           <Route path="/profile">
             <Profile
-              isLoggedIn={isLoggedIn} 
+              isLoggedIn={isLoggedIn}
               myEmail={myEmail}
               setMyEmail={setMyEmail}
               myPictureUrl={myPictureUrl}
@@ -37,7 +37,12 @@ const App = () => {
             />
           </Route>
           <Route path="/dashboard">
-            <Dashboard isLoggedIn={isLoggedIn} />
+            <Dashboard
+              isLoggedIn={isLoggedIn}
+              myEmail={myEmail}
+              myPictureUrl={myPictureUrl}
+              myTotalScore={myTotalScore}
+            />
           </Route>
           <Route path="/unauthorized">
             <Unauthorized isLoggedIn={isLoggedIn} />

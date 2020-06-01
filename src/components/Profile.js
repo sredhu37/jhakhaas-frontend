@@ -22,7 +22,7 @@ const Profile = (props) => {
     };
 
     getProfile();
-  });
+  }, []);
 
   return(
     <SecureComponent isLoggedIn={props.isLoggedIn} component={
