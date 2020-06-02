@@ -14,24 +14,14 @@ hr {
   border: 1px solid black;
 }
 
-.Login {
-  border: none;
-  padding: 10px;
-  padding-top: 10%;
-  color: black;
-  opacity: 0.9;
+.personPic {
+  height: 50px;
+  width: 50px;
+  margin-right: 10px;
 }
-
-.LoginMainGridItem {
-  background-color: white;
-  padding-top: 2em;
-  padding-bottom: 2em;
-  box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.3);
-  border: 3px solid white;
-}
-
-.GoogleLoginButton {
-  margin: auto;
+.personPic:hover {
+  cursor: pointer;
+  border: 1px solid #E9EAEE;
 }
 
 .MessageBox {
@@ -50,4 +40,29 @@ hr {
   box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.3);
   border: 3px solid white;
   overflow: scroll;
+}
+
+.profileCard {
+  opacity: 0.9;
+  margin: 5%;
+  padding: 5%;
+}
+
+.profileImage {
+  height: 100px;
+  width: 100px;
+  display: block;
+  margin: auto;
+  border-radius: 100%;
+}
+
+.dashboardTable {
+  background-color: white;
+}
+
+.dashboardImg {
+  height: 50px;
+  width: 50px;
+  border-radius: 100%;
+  margin: auto;
 }

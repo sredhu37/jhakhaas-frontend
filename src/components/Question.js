@@ -1,40 +1,55 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import axios from 'axios';
+import SecureComponent from './SecureComponent';
+import MessageBox from './MessageBox';
 
 const Question = (props) => {
   const [ selectedOptions, setSelectedOptions ] = useState({a: false, b: false, c: false, d: false});
   const [ problemStatement, setProblemStatement ] = useState("");
   const [ options, setOptions ] = useState({a: "", b: "", c: "", d: ""});
   const [ question, setQuestion ] = useState();
+  const [ displayMessageBox, setDisplayMessageBox ] = useState(false);
+  const [ messageBoxText, setMessageBoxText ] = useState("");
+  const [ messageBoxVariant, setMessageBoxVariant ] = useState("danger");
 
   const submitAnswer = async (event) => {
     event.preventDefault();
-    console.log(selectedOptions);
+
     try {
       const answerResponse = await axios.post(
-        'http://127.0.0.1:3001/api/questions/submit',
+        `${process.env.REACT_APP_SERVER_URL}/api/questions/submit`,
         {
           question,
           usersAnswer: selectedOptions
-        },
-        { headers: { "auth-token": localStorage.getItem('jwt'),
-       }}
+        }
       );
-  
+      console.log("sunny: ", answerResponse);
+
       if(answerResponse) {
-        if(answerResponse.status === 200) {
-          console.log('Correct answer');
-        } else if(answerResponse.status === 204) {
-          console.log('Incorrect answer');
-        } else {
-          throw new Error(`Unhandled Response status code: ${answerResponse.status}`);
+        switch(answerResponse.status) {
+          case 200:
+            setMessageBoxText('Correct answer. Check your Profile for score!');
+            setMessageBoxVariant('success');
+            break;
+          case 204:
+            setMessageBoxText('Incorrect answer');
+            setMessageBoxVariant('danger');
+            break;
+          case 208:
+            setMessageBoxText('Number of tries exceeded 3');
+            setMessageBoxVariant('danger');
+            break;
+          default:
+            throw new Error(`Unhandled Response status code: ${answerResponse.status}`);
         }
       }
     }
     catch(err) {
-      console.log("Error: ", err);
+      setMessageBoxText(err);
+      setMessageBoxVariant('danger');
     }
+    setDisplayMessageBox(true);
   };
 
   const handleSelections = (event) => {
@@ -77,15 +92,13 @@ const Question = (props) => {
       const errMsg = `Issue in getting today's question. Inform Sunny!`;
       try {
         const questionData = await axios.get(
-          'http://127.0.0.1:3001/api/questions/today',
-          { headers: { "auth-token": localStorage.getItem('jwt') }}
+          `${process.env.REACT_APP_SERVER_URL}/api/questions/today`
         );
   
         const questionObj = questionData.data[0];
         setQuestion(questionObj);
   
         if(questionData.status === 200) {
-          console.log(`Question: `, questionObj);
           setProblemStatement(questionObj.problemStatement);
           setOptions(questionObj.options);
         } else {
@@ -99,23 +112,31 @@ const Question = (props) => {
     getTodaysQuestion();
   }, []);
 
-  return (
-    <div className="Question">
-      <Container fluid>
-        <Row>
-          <Col sm={1} xs={0} />
-          <Col sm={10} xs={12} className="containerColumn">
-            Today's Question
-            <hr />
-            <p>{problemStatement}</p>
-            <br />
-            {getOptionsForm()}
-          </Col>
-          <Col sm={1} xs={0} />
-        </Row>
-      </Container>
-    </div>
-  );
+    return (
+      <SecureComponent isLoggedIn={props.isLoggedIn} component={
+        <div className="Question">
+          <MessageBox
+            message={ messageBoxText }
+            variant={ messageBoxVariant }
+            displayMessageBox={ displayMessageBox }
+            setDisplayMessageBox={ setDisplayMessageBox }
+          />
+          <Container fluid>
+            <Row>
+              <Col sm={1} xs={0} />
+              <Col sm={10} xs={12} className="containerColumn">
+                Today's Question
+                <hr />
+                <p>{problemStatement}</p>
+                <br />
+                {getOptionsForm()}
+              </Col>
+              <Col sm={1} xs={0} />
+            </Row>
+          </Container>
+        </div>  
+      } />
+    );
 };
 
 export default Question;
