@@ -52,6 +52,7 @@ const Dashboard = (props) => {
               }
             >
               <img src={props.myUser.pictureUrl} className="dashboardImg" alt="userPic"></img>
+              { props.myUser.name }
             </OverlayTrigger>
           </td>
           <td>{props.myUser.totalScore}</td>
