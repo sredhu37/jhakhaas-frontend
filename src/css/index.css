@@ -14,8 +14,10 @@ hr {
   border: 1px solid black;
 }
 
-.homeDiv {
-  text-align: left;
+.homeAccordian {
+  margin-top: 5%;
+  text-align: justify;
+  opacity: 0.9;
 }
 
 .personPic {

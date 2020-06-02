@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useReducer } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import SecureComponent from './SecureComponent';
@@ -22,7 +22,7 @@ const Dashboard = (props) => {
                 </Tooltip>
               }
             >
-              <img src={user.pictureUrl} className="dashboardImg"></img>
+              <img src={user.pictureUrl} className="dashboardImg" alt="userPic"></img>
             </OverlayTrigger>
           </td>
           <td>{user.totalScore}</td>
@@ -51,7 +51,7 @@ const Dashboard = (props) => {
                 </Tooltip>
               }
             >
-              <img src={props.myUser.pictureUrl} className="dashboardImg"></img>
+              <img src={props.myUser.pictureUrl} className="dashboardImg" alt="userPic"></img>
             </OverlayTrigger>
           </td>
           <td>{props.myUser.totalScore}</td>
