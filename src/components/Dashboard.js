@@ -63,7 +63,7 @@ const Dashboard = (props) => {
   useEffect(() => {
     const getTop10List = async () => {
       try {
-        const top10Leaders = await axios.get("http://127.0.0.1:4000/api/users/leaders");
+        const top10Leaders = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/users/leaders`);
         console.log("Top leaders: ", top10Leaders.data);
         setTopLeaders(top10Leaders.data);
       } catch(error) {
