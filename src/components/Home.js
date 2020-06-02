@@ -21,7 +21,7 @@ const Home = (props) => {
   });
 
   return(
-    <div>
+    <div className="homeDiv">
       <h1>Frequently asked questions</h1>
       <ol>
         <li>
