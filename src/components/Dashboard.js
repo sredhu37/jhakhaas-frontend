@@ -22,7 +22,10 @@ const Dashboard = (props) => {
                 </Tooltip>
               }
             >
-              <img src={user.pictureUrl} className="dashboardImg" alt="userPic"></img>
+              <span>
+                <img src={user.pictureUrl} className="dashboardImg" alt="userPic"></img>
+                { " " + user.name }
+              </span>
             </OverlayTrigger>
           </td>
           <td>{user.totalScore}</td>
