@@ -52,7 +52,7 @@ const NavBar = (props) => {
     return (
       <Navbar bg="light" expand="lg">
         <Link to="/">
-          <Navbar.Brand>JhaKhaas</Navbar.Brand>
+          <Navbar.Brand>Solve the Sawaal</Navbar.Brand>
         </Link>
         <Form inline>
           <Nav className="mr-auto">
