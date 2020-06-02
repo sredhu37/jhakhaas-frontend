@@ -23,7 +23,7 @@ const NavBar = (props) => {
     return (
       <Navbar bg="light" expand="lg">
         <Link to="/">
-          <Navbar.Brand>JhaKhaas</Navbar.Brand>
+          <Navbar.Brand>Solve the Sawaal</Navbar.Brand>
         </Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">

@@ -46,23 +46,6 @@ const Home = (props) => {
                 </Accordion.Collapse>
               </Card>
               <Card>
-                <Accordion.Toggle as={Card.Header} eventKey="1">
-                  Why this name JhaKhaas?
-                </Accordion.Toggle>
-                <Accordion.Collapse eventKey="1">
-                  <Card.Body>
-                    <p>
-                      I got this idea from a person who gets a feeling of satisfaction by solving aptitude problems.
-                      First name which came to my mind was <b><i>Chalo Sawaal Banate Hain</i></b>. But that's more like a tagline instead of name of an app.
-                    </p>
-                    <p>
-                      Then I thought, why not give it name of the person who gave me the idea.
-                      Hence, <b>Jha => Jha Parivar => Jha Specials => JhaKhaas</b> (which also means Awesome, Epic, Cool).
-                    </p>
-                  </Card.Body>
-                </Accordion.Collapse>
-              </Card>
-              <Card>
                 <Accordion.Toggle as={Card.Header} eventKey="2">
                   How to use this app?
                 </Accordion.Toggle>
