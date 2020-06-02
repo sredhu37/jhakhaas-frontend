@@ -22,12 +22,10 @@ const Dashboard = (props) => {
                 </Tooltip>
               }
             >
-              <span>
-                <img src={user.pictureUrl} className="dashboardImg" alt="userPic"></img>
-                { " " + user.name }
-              </span>
+              <img src={user.pictureUrl} className="dashboardImg" alt="userPic"></img>
             </OverlayTrigger>
           </td>
+          <td>{ " " + user.name }</td>
           <td>{user.totalScore}</td>
         </tr>
       );
@@ -54,12 +52,10 @@ const Dashboard = (props) => {
                 </Tooltip>
               }
             >
-              <span>
-                <img src={props.myUser.pictureUrl} className="dashboardImg" alt="userPic"></img>
-                { " " + props.myUser.name }
-              </span>
+              <img src={props.myUser.pictureUrl} className="dashboardImg" alt="userPic"></img>
             </OverlayTrigger>
           </td>
+          <td>{ " " + props.myUser.name }</td>
           <td>{props.myUser.totalScore}</td>
         </tr>
       );
@@ -87,6 +83,7 @@ const Dashboard = (props) => {
           <thead>
             <tr>
               <th>#</th>
+              <th> </th>
               <th>User</th>
               <th>Score</th>
             </tr>
