@@ -14,39 +14,39 @@ const Question = (props) => {
   const submitAnswer = async (event) => {
     event.preventDefault();
 
-    try {
-      const answerResponse = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}/api/questions/submit`,
-        {
-          question,
-          usersAnswer: selectedOptions
-        }
-      );
-      console.log("sunny: ", answerResponse);
+    // try {
+    //   const answerResponse = await axios.post(
+    //     `${process.env.REACT_APP_SERVER_URL}/api/questions/submit`,
+    //     {
+    //       question,
+    //       usersAnswer: selectedOptions
+    //     }
+    //   );
+    //   console.log("sunny: ", answerResponse);
 
-      if(answerResponse) {
-        switch(answerResponse.status) {
-          case 200:
-            setMessageBoxText('Correct answer. Check your Profile for score!');
-            setMessageBoxVariant('success');
-            break;
-          case 204:
-            setMessageBoxText('Incorrect answer');
-            setMessageBoxVariant('danger');
-            break;
-          case 208:
-            setMessageBoxText('Number of tries exceeded 3');
-            setMessageBoxVariant('danger');
-            break;
-          default:
-            throw new Error(`Unhandled Response status code: ${answerResponse.status}`);
-        }
-      }
-    }
-    catch(err) {
-      setMessageBoxText(err);
-      setMessageBoxVariant('danger');
-    }
+    //   if(answerResponse) {
+    //     switch(answerResponse.status) {
+    //       case 200:
+    //         setMessageBoxText('Correct answer. Check your Profile for score!');
+    //         setMessageBoxVariant('success');
+    //         break;
+    //       case 204:
+    //         setMessageBoxText('Incorrect answer');
+    //         setMessageBoxVariant('danger');
+    //         break;
+    //       case 208:
+    //         setMessageBoxText('Number of tries exceeded 3');
+    //         setMessageBoxVariant('danger');
+    //         break;
+    //       default:
+    //         throw new Error(`Unhandled Response status code: ${answerResponse.status}`);
+    //     }
+    //   }
+    // }
+    // catch(err) {
+    //   setMessageBoxText(err);
+    //   setMessageBoxVariant('danger');
+    // }
     setDisplayMessageBox(true);
   };
 
