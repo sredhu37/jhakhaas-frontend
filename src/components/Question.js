@@ -6,9 +6,7 @@ import MessageBox from './MessageBox';
 
 const Question = (props) => {
   const [ selectedOptions, setSelectedOptions ] = useState({a: false, b: false, c: false, d: false});
-  const [ problemStatement, setProblemStatement ] = useState("");
-  const [ options, setOptions ] = useState({a: "", b: "", c: "", d: ""});
-  const [ question, setQuestion ] = useState();
+  const [ questions, setQuestions ] = useState([]);
   const [ displayMessageBox, setDisplayMessageBox ] = useState(false);
   const [ messageBoxText, setMessageBoxText ] = useState("");
   const [ messageBoxVariant, setMessageBoxVariant ] = useState("danger");
@@ -59,9 +57,10 @@ const Question = (props) => {
     setSelectedOptions({...selectedOptions, [key]: newValue});
   };
 
-  const getOptionsForm = () => {
-    const optionsKeys = Object.keys(options);
+  const getOptionsForm = (que) => {
+    const options = que.options;
 
+    const optionsKeys = Object.keys(options);
     return(
       <Form>
         {
@@ -85,22 +84,38 @@ const Question = (props) => {
     );
   };
 
+  const getQuestions = () => {
+    const result = questions.map(que => {
+      return(
+        <div>
+          <p>{que.problemStatement}</p>
+          <br />
+          {getOptionsForm(que)}
+        </div>
+      );
+    });
+
+    return result;
+  };
+
   // Empty array as the second argument means "Run only once after render"
   // Equivalent to ComponentDidMount method for a class component
   useEffect(() => {
-    const getTodaysQuestion = async () => {
-      const errMsg = `Issue in getting today's question. Inform Sunny!`;
+    const getTodaysQuestions = async () => {
+      const errMsg = `Issue in getting today's questions. Inform Sunny!`;
       try {
-        const questionData = await axios.get(
+        const questionsData = await axios.get(
           `${process.env.REACT_APP_SERVER_URL}/api/questions/today`
         );
   
-        const questionObj = questionData.data[0];
-        setQuestion(questionObj);
-  
-        if(questionData.status === 200) {
-          setProblemStatement(questionObj.problemStatement);
-          setOptions(questionObj.options);
+        if(questionsData.status === 200) {
+          if(questionsData.data.length < 5) {
+            throw new Error(errMsg);
+          } else if (questionsData.data.length > 5){
+            setQuestions((questionsData.data).slice(0, 5));
+          } else {
+            setQuestions(questionsData.data);
+          }
         } else {
           throw new Error(errMsg);
         }
@@ -109,31 +124,29 @@ const Question = (props) => {
       }
     };
 
-    getTodaysQuestion();
+    getTodaysQuestions();
   }, []);
 
     return (
       <SecureComponent isLoggedIn={props.isLoggedIn} component={
         <div className="Question">
-          <Container fluid>
-            <Row>
-              <Col sm={1} xs={0} />
-              <Col sm={10} xs={12} className="containerColumn">
-                Today's Question
-                <hr />
-                <p>{problemStatement}</p>
-                <br />
-                {getOptionsForm()}
-              </Col>
-              <Col sm={1} xs={0} />
-            </Row>
-          </Container>
           <MessageBox
             message={ messageBoxText }
             variant={ messageBoxVariant }
             displayMessageBox={ displayMessageBox }
             setDisplayMessageBox={ setDisplayMessageBox }
           />
+          <Container fluid>
+            <Row>
+              <Col sm={1} xs={0} />
+              <Col sm={10} xs={12} className="containerColumn">
+                Today's Questions
+                <hr />
+                {getQuestions()}
+              </Col>
+              <Col sm={1} xs={0} />
+            </Row>
+          </Container>
         </div>  
       } />
     );
