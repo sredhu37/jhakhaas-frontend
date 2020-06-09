@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import DatePicker from "react-date-picker";
 import MessageBox from './MessageBox';
 
 const UploadQuestions = () => {
   const [ displayMessageBox, setDisplayMessageBox ] = useState(false);
   const [ messageBoxText, setMessageBoxText ] = useState("");
   const [ messageBoxVariant, setMessageBoxVariant ] = useState("danger");
-  const [ dateForQuestions, setDateForQuestions ] = useState("");
+  const [ dateForQuestions, setDateForQuestions ] = useState(new Date());
   const [ questions, setQuestions ] = useState([
     {
       number: 1,
@@ -65,6 +66,11 @@ const UploadQuestions = () => {
     }
   ]);
 
+  const handleDateChange = (date) => {
+    console.log("date: ", date);
+    setDateForQuestions(date)
+  }
+
   const submitForm = (event) => {
     event.preventDefault();
     console.log("");
@@ -84,7 +90,7 @@ const UploadQuestions = () => {
           <Col sm={10} xs={12} className="containerColumn">
             <Form>
               <FiveQuestionsForm questions={questions} setQuestions={setQuestions} />
-              {/* TODO: Put DatePicker here */}
+              <DatePicker value={dateForQuestions} onChange={handleDateChange} />
               <Button variant="primary" onClick={submitForm}>
                 Upload all 5 questions
               </Button>
