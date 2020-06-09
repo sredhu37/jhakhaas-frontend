@@ -30,6 +30,7 @@ const NavBar = (props) => {
           <Nav className="mr-auto">
             <Nav.Link as={Link} to='/question'>Question</Nav.Link>
             <Nav.Link as={Link} to='/dashboard'>Dashboard</Nav.Link>
+            <Nav.Link as={Link} to='/upload-questions'>Upload Questions</Nav.Link>
           </Nav>
           <Form inline>
             <Nav className="mr-auto">

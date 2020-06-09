@@ -4,11 +4,13 @@ import Question from './Question';
 import NavBar from './NavBar';
 import Home from './Home';
 import Dashboard from './Dashboard';
+import UploadQuestions from './UploadQuestions';
 import Profile from './Profile';
 import Unauthorized from './Unauthorized';
 
 const App = () => {
   const [ isLoggedIn, setIsLoggedIn ] = useState(false);
+  const [ isAdmin, setIsAdmin ] = useState(false);
   const [ myUser, setMyUser ] = useState({});
 
   return(
@@ -33,6 +35,13 @@ const App = () => {
           <Route path="/dashboard">
             <Dashboard
               isLoggedIn={isLoggedIn}
+              myUser={myUser}
+            />
+          </Route>
+          <Route path="/upload-questions">
+            <UploadQuestions
+              isLoggedIn={isLoggedIn}
+              isAdmin={isAdmin}
               myUser={myUser}
             />
           </Route>

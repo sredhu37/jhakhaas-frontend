@@ -6,7 +6,9 @@ import MessageBox from './MessageBox';
 
 const Question = (props) => {
   const [ selectedOptions, setSelectedOptions ] = useState({a: false, b: false, c: false, d: false});
-  const [ questions, setQuestions ] = useState([]);
+  const [ problemStatement, setProblemStatement ] = useState("");
+  const [ options, setOptions ] = useState({a: "", b: "", c: "", d: ""});
+  const [ question, setQuestion ] = useState();
   const [ displayMessageBox, setDisplayMessageBox ] = useState(false);
   const [ messageBoxText, setMessageBoxText ] = useState("");
   const [ messageBoxVariant, setMessageBoxVariant ] = useState("danger");
@@ -14,39 +16,39 @@ const Question = (props) => {
   const submitAnswer = async (event) => {
     event.preventDefault();
 
-    // try {
-    //   const answerResponse = await axios.post(
-    //     `${process.env.REACT_APP_SERVER_URL}/api/questions/submit`,
-    //     {
-    //       question,
-    //       usersAnswer: selectedOptions
-    //     }
-    //   );
-    //   console.log("sunny: ", answerResponse);
+    try {
+      const answerResponse = await axios.post(
+        `${process.env.REACT_APP_SERVER_URL}/api/questions/submit`,
+        {
+          question,
+          usersAnswer: selectedOptions
+        }
+      );
+      console.log("sunny: ", answerResponse);
 
-    //   if(answerResponse) {
-    //     switch(answerResponse.status) {
-    //       case 200:
-    //         setMessageBoxText('Correct answer. Check your Profile for score!');
-    //         setMessageBoxVariant('success');
-    //         break;
-    //       case 204:
-    //         setMessageBoxText('Incorrect answer');
-    //         setMessageBoxVariant('danger');
-    //         break;
-    //       case 208:
-    //         setMessageBoxText('Number of tries exceeded 3');
-    //         setMessageBoxVariant('danger');
-    //         break;
-    //       default:
-    //         throw new Error(`Unhandled Response status code: ${answerResponse.status}`);
-    //     }
-    //   }
-    // }
-    // catch(err) {
-    //   setMessageBoxText(err);
-    //   setMessageBoxVariant('danger');
-    // }
+      if(answerResponse) {
+        switch(answerResponse.status) {
+          case 200:
+            setMessageBoxText('Correct answer. Check your Profile for score!');
+            setMessageBoxVariant('success');
+            break;
+          case 204:
+            setMessageBoxText('Incorrect answer');
+            setMessageBoxVariant('danger');
+            break;
+          case 208:
+            setMessageBoxText('Number of tries exceeded 3');
+            setMessageBoxVariant('danger');
+            break;
+          default:
+            throw new Error(`Unhandled Response status code: ${answerResponse.status}`);
+        }
+      }
+    }
+    catch(err) {
+      setMessageBoxText(err);
+      setMessageBoxVariant('danger');
+    }
     setDisplayMessageBox(true);
   };
 
@@ -57,10 +59,9 @@ const Question = (props) => {
     setSelectedOptions({...selectedOptions, [key]: newValue});
   };
 
-  const getOptionsForm = (que) => {
-    const options = que.options;
-
+  const getOptionsForm = () => {
     const optionsKeys = Object.keys(options);
+
     return(
       <Form>
         {
@@ -84,38 +85,22 @@ const Question = (props) => {
     );
   };
 
-  const getQuestions = () => {
-    const result = questions.map(que => {
-      return(
-        <div>
-          <p>{que.problemStatement}</p>
-          <br />
-          {getOptionsForm(que)}
-        </div>
-      );
-    });
-
-    return result;
-  };
-
   // Empty array as the second argument means "Run only once after render"
   // Equivalent to ComponentDidMount method for a class component
   useEffect(() => {
-    const getTodaysQuestions = async () => {
-      const errMsg = `Issue in getting today's questions. Inform Sunny!`;
+    const getTodaysQuestion = async () => {
+      const errMsg = `Issue in getting today's question. Inform Sunny!`;
       try {
-        const questionsData = await axios.get(
+        const questionData = await axios.get(
           `${process.env.REACT_APP_SERVER_URL}/api/questions/today`
         );
   
-        if(questionsData.status === 200) {
-          if(questionsData.data.length < 5) {
-            throw new Error(errMsg);
-          } else if (questionsData.data.length > 5){
-            setQuestions((questionsData.data).slice(0, 5));
-          } else {
-            setQuestions(questionsData.data);
-          }
+        const questionObj = questionData.data[0];
+        setQuestion(questionObj);
+  
+        if(questionData.status === 200) {
+          setProblemStatement(questionObj.problemStatement);
+          setOptions(questionObj.options);
         } else {
           throw new Error(errMsg);
         }
@@ -124,7 +109,7 @@ const Question = (props) => {
       }
     };
 
-    getTodaysQuestions();
+    getTodaysQuestion();
   }, []);
 
     return (
@@ -140,9 +125,11 @@ const Question = (props) => {
             <Row>
               <Col sm={1} xs={0} />
               <Col sm={10} xs={12} className="containerColumn">
-                Today's Questions
+                Today's Question
                 <hr />
-                {getQuestions()}
+                <p>{problemStatement}</p>
+                <br />
+                {getOptionsForm()}
               </Col>
               <Col sm={1} xs={0} />
             </Row>

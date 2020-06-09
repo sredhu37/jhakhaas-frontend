@@ -72,3 +72,7 @@ hr {
   border-radius: 100%;
   margin: auto;
 }
+
+.optionText {
+  margin: 10px;
+}
