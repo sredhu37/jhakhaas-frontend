@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import DatePicker from 'react-date-picker';
 import MessageBox from './MessageBox';
+import SecureComponent from './SecureComponent';
 
-const UploadQuestions = () => {
+const UploadQuestions = (props) => {
   const [ displayMessageBox, setDisplayMessageBox ] = useState(false);
   const [ messageBoxText, setMessageBoxText ] = useState("");
   const [ messageBoxVariant, setMessageBoxVariant ] = useState("danger");
@@ -77,32 +78,28 @@ const UploadQuestions = () => {
   };
 
   return(
-    <div className="Question">
-      <MessageBox
-        message={ messageBoxText }
-        variant={ messageBoxVariant }
-        displayMessageBox={ displayMessageBox }
-        setDisplayMessageBox={ setDisplayMessageBox }
-      />
-      <Container fluid>
-        <Row>
-          <Col sm={1} xs={0} />
-          <Col sm={10} xs={12} className="containerColumn">
-            <Form>
-              <FiveQuestionsForm questions={questions} setQuestions={setQuestions} />
-              <Form.Label>Which date are these questions for?</Form.Label>
-              <div className="datePicker">
-                <DatePicker value={dateForQuestions} onChange={handleDateChange} />
-              </div>
-              <Button variant="primary" onClick={submitForm}>
-                Upload all 5 questions
-              </Button>
-            </Form>
-          </Col>
-          <Col sm={1} xs={0} />
-        </Row>
-      </Container>
-    </div>
+    <SecureComponent isLoggedIn={props.isLoggedIn} component={
+      <div className="Question">
+        <MessageBox
+          message={ messageBoxText }
+          variant={ messageBoxVariant }
+          displayMessageBox={ displayMessageBox }
+          setDisplayMessageBox={ setDisplayMessageBox }
+        />
+        <Container fluid>
+          <Form>
+            <FiveQuestionsForm questions={questions} setQuestions={setQuestions} />
+            <Form.Label>Which date are these questions for?</Form.Label>
+            <div className="datePicker">
+              <DatePicker value={dateForQuestions} onChange={handleDateChange} />
+            </div>
+            <Button variant="primary" onClick={submitForm}>
+              Upload all 5 questions
+            </Button>
+          </Form>
+        </Container>
+      </div>
+    } />
   );
 };
 
@@ -113,11 +110,17 @@ const FiveQuestionsForm = ({ questions, setQuestions }) => {
     return(
       <div key={que.number}>
         <b>QUESTION {que.number}:</b>
-        <SingleQuestion
-          questionNumber={que.number}
-          questions={questions}
-          setQuestions={setQuestions}
-        />
+        <Row>
+          <Col sm={1} xs={0} />
+          <Col sm={10} xs={12} className="containerColumn">
+            <SingleQuestion
+              questionNumber={que.number}
+              questions={questions}
+              setQuestions={setQuestions}
+            />
+          </Col>
+          <Col sm={1} xs={0} />
+        </Row>
         <hr />
       </div>
     );
