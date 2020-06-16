@@ -43,7 +43,7 @@ const NavBar = (props) => {
               </Link>
             </Nav>
             <Nav className="mr-auto">
-              <Button variant="outline-info" onClick={handleLogout}>Logout</Button>
+              <Button variant="danger" onClick={handleLogout}>Logout</Button>
             </Nav>
           </Form>
         </Navbar.Collapse>
@@ -57,7 +57,7 @@ const NavBar = (props) => {
         </Link>
         <Form inline>
           <Nav className="mr-auto">
-            <Button variant="outline-info" onClick={handleLogin}>Login</Button>
+            <Button variant="primary" onClick={handleLogin}>Login</Button>
           </Nav>
         </Form>
       </Navbar>

@@ -37,7 +37,7 @@ const Profile = (props) => {
                   My total score: { props.myUser.totalScore }
                 </Card.Text>
                 <Link to="/dashboard">
-                  <Button variant="outline-info">Check your rank</Button>
+                  <Button variant="primary">Check your rank</Button>
                 </Link>
               </Card.Body>
             </Card>
