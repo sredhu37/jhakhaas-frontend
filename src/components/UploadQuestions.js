@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
-import DatePicker from "react-date-picker";
+import DatePicker from 'react-date-picker';
 import MessageBox from './MessageBox';
 
 const UploadQuestions = () => {
@@ -90,7 +90,10 @@ const UploadQuestions = () => {
           <Col sm={10} xs={12} className="containerColumn">
             <Form>
               <FiveQuestionsForm questions={questions} setQuestions={setQuestions} />
-              <DatePicker value={dateForQuestions} onChange={handleDateChange} />
+              <Form.Label>Which date are these questions for?</Form.Label>
+              <div className="datePicker">
+                <DatePicker value={dateForQuestions} onChange={handleDateChange} />
+              </div>
               <Button variant="primary" onClick={submitForm}>
                 Upload all 5 questions
               </Button>
