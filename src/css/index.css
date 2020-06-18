@@ -36,8 +36,8 @@ hr {
 }
 
 .containerColumn {
-  margin-top: 10vh;
-  margin-bottom: 10vh;
+  margin-top: 5vh;
+  margin-bottom: 5vh;
   padding: 20px;
   background: white;
   text-align: center;
@@ -78,5 +78,9 @@ hr {
 
 .datePicker {
   display: block;
+  margin: 20px;
+}
+
+.submitButton {
   margin: 20px;
 }

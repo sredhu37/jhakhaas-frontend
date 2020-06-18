@@ -93,7 +93,7 @@ const UploadQuestions = (props) => {
             <div className="datePicker">
               <DatePicker value={dateForQuestions} onChange={handleDateChange} />
             </div>
-            <Button variant="primary" onClick={submitForm}>
+            <Button variant="primary" onClick={submitForm} className="submitButton" >
               Upload all 5 questions
             </Button>
           </Form>
@@ -109,10 +109,10 @@ const FiveQuestionsForm = ({ questions, setQuestions }) => {
   return questions.map(que => {
     return(
       <div key={que.number}>
-        <b>QUESTION {que.number}:</b>
         <Row>
           <Col sm={1} xs={0} />
           <Col sm={10} xs={12} className="containerColumn">
+            <b>QUESTION {que.number}:</b>
             <SingleQuestion
               questionNumber={que.number}
               questions={questions}
@@ -121,7 +121,6 @@ const FiveQuestionsForm = ({ questions, setQuestions }) => {
           </Col>
           <Col sm={1} xs={0} />
         </Row>
-        <hr />
       </div>
     );
   });
