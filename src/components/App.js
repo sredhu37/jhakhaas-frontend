@@ -10,7 +10,6 @@ import Unauthorized from './Unauthorized';
 
 const App = () => {
   const [ isLoggedIn, setIsLoggedIn ] = useState(false);
-  const [ isAdmin, setIsAdmin ] = useState(false);
   const [ myUser, setMyUser ] = useState({});
 
   return(
@@ -41,7 +40,6 @@ const App = () => {
           <Route path="/upload-questions">
             <UploadQuestions
               isLoggedIn={isLoggedIn}
-              isAdmin={isAdmin}
               myUser={myUser}
             />
           </Route>

@@ -3,14 +3,15 @@
 // styles
 body, html {
   text-align: center;
-  color: black;
+  color:#757576;
   height: 100%;
   margin: 0;
 
-  background-image: url("../static/bg_login2.jpg");
+  background-image: url("../static/bg_login3.jpg");
 
   /* Center and scale the image nicely */
   background-position: center;
+  background-attachment: fixed;
   // background-repeat: no-repeat;
   background-size: cover;
 }
@@ -22,7 +23,7 @@ hr {
 .homeAccordian {
   margin-top: 5%;
   text-align: justify;
-  opacity: 0.9;
+  opacity: 0.95;
 }
 
 .personPic {
