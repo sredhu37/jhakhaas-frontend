@@ -3,12 +3,14 @@ import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import DatePicker from 'react-date-picker';
 import MessageBox from './MessageBox';
 import SecureComponent from './SecureComponent';
+import AdminComponent from './AdminComponent';
 
 const UploadQuestions = (props) => {
   const [ displayMessageBox, setDisplayMessageBox ] = useState(false);
   const [ messageBoxText, setMessageBoxText ] = useState("");
   const [ messageBoxVariant, setMessageBoxVariant ] = useState("danger");
   const [ dateForQuestions, setDateForQuestions ] = useState(new Date());
+  const [ classForQuestions, setClassForQuestions ] = useState("OTHER");
   const [ questions, setQuestions ] = useState([
     {
       number: 1,
@@ -70,35 +72,107 @@ const UploadQuestions = (props) => {
   const handleDateChange = (date) => {
     console.log("date: ", date);
     setDateForQuestions(date)
-  }
+  };
+
+  const handleClassChange = (event) => {
+    setClassForQuestions(event.target.value);
+  };
+
+  const areQuestionsValid = () => {
+    const result = { 
+      isValid: true,
+      messages: []
+    };
+
+    questions.forEach(que => {
+      // check that each question has a problem statement
+      if(que.problemStatement.trim() === '') {
+        result.isValid = false;
+        result.messages.push(`Problem statement is empty for question number: ${que.number}`);
+      }
+
+      // check that each question has 4 options
+      if (
+        que.options.a.trim() === '' ||
+        que.options.b.trim() === '' ||
+        que.options.c.trim() === '' ||
+        que.options.d.trim() === ''
+      ) {
+        result.isValid = false;
+        result.messages.push(`Option(s) is/are empty for question number: ${que.number}`);
+      }
+
+      // check that answer string has value
+      if(que.correctAnswerString.trim() === '') {
+        result.isValid = false;
+        result.messages.push(`You forgot to select the answer(s) for question number: ${que.number}`);
+      }
+    });
+
+    return result;
+  };
 
   const submitForm = (event) => {
     event.preventDefault();
-    console.log("");
+
+    const { isValid, messages } = areQuestionsValid()
+    if (isValid) {
+      console.log("all valid");
+    } else {
+      setMessageBoxVariant();
+      setMessageBoxText(messages[0]);
+      setDisplayMessageBox(true);
+    }
   };
 
   return(
     <SecureComponent isLoggedIn={props.isLoggedIn} component={
-      <div className="Question">
-        <MessageBox
-          message={ messageBoxText }
-          variant={ messageBoxVariant }
-          displayMessageBox={ displayMessageBox }
-          setDisplayMessageBox={ setDisplayMessageBox }
-        />
-        <Container fluid>
-          <Form>
-            <FiveQuestionsForm questions={questions} setQuestions={setQuestions} />
-            <Form.Label>Which date are these questions for?</Form.Label>
-            <div className="datePicker">
-              <DatePicker value={dateForQuestions} onChange={handleDateChange} />
-            </div>
-            <Button variant="primary" onClick={submitForm} className="submitButton" >
-              Upload all 5 questions
-            </Button>
-          </Form>
-        </Container>
-      </div>
+      <AdminComponent myUser={props.myUser} component={
+        <div>
+          <MessageBox
+            message={ messageBoxText }
+            variant={ messageBoxVariant }
+            displayMessageBox={ displayMessageBox }
+            setDisplayMessageBox={ setDisplayMessageBox }
+          />
+          <Container fluid>
+            <Form>
+              <FiveQuestionsForm questions={questions} setQuestions={setQuestions} />
+              <Row>
+                <Col sm={1} xs={0} />
+                <Col sm={10} xs={12} className="containerColumn">
+                <Form.Group>
+                  <Form.Label>These questions are for which class?</Form.Label>
+                  <Form.Control className="selectClass" as="select" value={classForQuestions} onChange={handleClassChange}>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                    <option>11</option>
+                    <option>12</option>
+                    <option>OTHER</option>
+                  </Form.Control>
+                  <Form.Label>Which date are these questions for?</Form.Label>
+                  <div className="datePicker">
+                    <DatePicker value={dateForQuestions} onChange={handleDateChange} />
+                  </div>
+                  <Button variant="primary" onClick={submitForm} className="submitButton" >
+                    Upload all 5 questions
+                  </Button>
+                </Form.Group>
+                </Col>
+                <Col sm={1} xs={0} />
+              </Row>
+              </Form>
+          </Container>
+        </div>
+      } />
     } />
   );
 };

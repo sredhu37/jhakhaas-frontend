@@ -12,7 +12,7 @@ const Profile = (props) => {
         if(profile) {
           props.setMyUser(profile.data);
         } else {
-          throw new Error("Couldn't receive profile from the server. Inform Sunny immediately!")
+          throw new Error("Couldn't receive profile from the server. Inform Administrator immediately!")
         }
       } catch(error) {
         console.log(error);

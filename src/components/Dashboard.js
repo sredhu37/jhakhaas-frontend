@@ -69,7 +69,7 @@ const Dashboard = (props) => {
         console.log("Top leaders: ", top10Leaders.data);
         setTopLeaders(top10Leaders.data);
       } catch(error) {
-        console.log("Unable to get top 10 list. Please inform Sunny immediately! Error: ", error);
+        console.log("Unable to get top 10 list. Please inform Administrator immediately! Error: ", error);
       }
     };
 

@@ -24,7 +24,6 @@ const Question = (props) => {
           usersAnswer: selectedOptions
         }
       );
-      console.log("sunny: ", answerResponse);
 
       if(answerResponse) {
         switch(answerResponse.status) {
@@ -89,7 +88,7 @@ const Question = (props) => {
   // Equivalent to ComponentDidMount method for a class component
   useEffect(() => {
     const getTodaysQuestion = async () => {
-      const errMsg = `Issue in getting today's question. Inform Sunny!`;
+      const errMsg = `Issue in getting today's question. Inform Administrator immediately!`;
       try {
         const questionData = await axios.get(
           `${process.env.REACT_APP_SERVER_URL}/api/questions/today`
@@ -105,7 +104,9 @@ const Question = (props) => {
           throw new Error(errMsg);
         }
       } catch(error) {
-        console.log(errMsg);
+        setMessageBoxText(`Unable to load questions. Inform Administrator immediately!`);
+        setMessageBoxVariant('danger');
+        setDisplayMessageBox(true);
       }
     };
 
