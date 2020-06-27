@@ -72,7 +72,7 @@ const Question = (props) => {
                 id={key}
                 checked={selectedOptions[key]}
                 onChange={handleSelections}
-              />
+              />  
             </Form.Group>)
           })
         }

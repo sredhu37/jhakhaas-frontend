@@ -21,7 +21,12 @@ const UploadQuestions = (props) => {
         c: "",
         d: ""
       },
-      correctAnswerString: ""
+      answer: {
+        a: false,
+        b: false,
+        c: false,
+        d: false
+      }
     },
     {
       number: 2,
@@ -32,7 +37,13 @@ const UploadQuestions = (props) => {
         c: "",
         d: ""
       },
-      correctAnswerString: ""
+      answer: {
+        a: false,
+        b: false,
+        c: false,
+        d: false
+      },
+      finalAnswersString: ""
     },
     {
       number: 3,
@@ -43,7 +54,13 @@ const UploadQuestions = (props) => {
         c: "",
         d: ""
       },
-      correctAnswerString: ""
+      answer: {
+        a: false,
+        b: false,
+        c: false,
+        d: false
+      },
+      finalAnswersString: ""
     },
     {
       number: 4,
@@ -54,7 +71,13 @@ const UploadQuestions = (props) => {
         c: "",
         d: ""
       },
-      correctAnswerString: ""
+      answer: {
+        a: false,
+        b: false,
+        c: false,
+        d: false
+      },
+      finalAnswersString: ""
     },
     {
       number: 5,
@@ -65,7 +88,13 @@ const UploadQuestions = (props) => {
         c: "",
         d: ""
       },
-      correctAnswerString: ""
+      answer: {
+        a: false,
+        b: false,
+        c: false,
+        d: false
+      },
+      finalAnswersString: ""
     }
   ]);
 
@@ -102,12 +131,16 @@ const UploadQuestions = (props) => {
         result.messages.push(`Option(s) is/are empty for question number: ${que.number}`);
       }
 
-      // check that answer string has value
-      if(que.correctAnswerString.trim() === '') {
+      // check that answer has value
+      if(!(que.answer.a || que.answer.b || que.answer.c || que.answer.d)) {
         result.isValid = false;
         result.messages.push(`You forgot to select the answer(s) for question number: ${que.number}`);
       }
     });
+
+    // check that there is a date selected which is not in past
+
+    // check whether there is a class selected
 
     return result;
   };
@@ -115,9 +148,19 @@ const UploadQuestions = (props) => {
   const submitForm = (event) => {
     event.preventDefault();
 
-    const { isValid, messages } = areQuestionsValid()
+    const { isValid, messages } = areQuestionsValid();
+
     if (isValid) {
       console.log("all valid");
+      const updatedQuestionsObj = questions.map(que => {
+        return {
+          ...que,
+          dateAsked: dateForQuestions,
+          class: classForQuestions
+        };
+      });
+
+      setQuestions(updatedQuestionsObj);
     } else {
       setMessageBoxVariant();
       setMessageBoxText(messages[0]);
@@ -234,6 +277,24 @@ const SingleQuestion = ({ questionNumber, questions, setQuestions }) => {
     setQuestions(updatedQuestionsObj);
   };
 
+  const handleAnswerChange = (event) => {
+    const updatedQuestionsObj = questions.map(que => {
+      if(que.number === questionNumber) {
+        return {
+          ...que,
+          answer: {
+            ...que.answer,
+            [event.target.name]: !que.answer[event.target.name]
+          }
+        };
+      } else {
+        return que;
+      }
+    });
+
+    setQuestions(updatedQuestionsObj);
+  };
+
   return(
     <div>
       <Form.Group>
@@ -246,7 +307,11 @@ const SingleQuestion = ({ questionNumber, questions, setQuestions }) => {
         />
       </Form.Group>
       <EnterOptions handleOptionTextChange={handleOptionTextChange} />
-      <EnterAnswers questions={questions} questionNumber={questionNumber} />
+      <EnterAnswers
+        questions={questions}
+        questionNumber={questionNumber}
+        handleAnswerChange={handleAnswerChange}
+      />
     </div>
   );
 };
@@ -299,7 +364,7 @@ const EnterOptions = ({ handleOptionTextChange }) => {
   );
 };
 
-const EnterAnswers = ({ questions, questionNumber }) => {
+const EnterAnswers = ({ questions, questionNumber, handleAnswerChange }) => {
   return(
     <Form.Group>
         <Form.Label>What is the answer?</Form.Label>
@@ -307,13 +372,19 @@ const EnterAnswers = ({ questions, questionNumber }) => {
           <Col sm={6} xs={12} >
             <Form.Check
               type="checkbox"
+              name="a"
               label={`a: ${questions[questionNumber-1].options.a}`}
+              value={questions[questionNumber-1].answer.a}
+              onChange={handleAnswerChange}
             />
           </Col>
           <Col sm={6} xs={12} >
             <Form.Check
               type="checkbox"
+              name="b"
               label={`b: ${questions[questionNumber-1].options.b}`}
+              value={questions[questionNumber-1].answer.b}
+              onChange={handleAnswerChange}
             />
           </Col>
         </Row>
@@ -321,13 +392,19 @@ const EnterAnswers = ({ questions, questionNumber }) => {
           <Col sm={6} xs={12} >
             <Form.Check
               type="checkbox"
+              name="c"
               label={`c: ${questions[questionNumber-1].options.c}`}
+              value={questions[questionNumber-1].answer.c}
+              onChange={handleAnswerChange}
             />
           </Col>
           <Col sm={6} xs={12} >
             <Form.Check
               type="checkbox"
+              name="d"
               label={`d: ${questions[questionNumber-1].options.d}`}
+              value={questions[questionNumber-1].answer.d}
+              onChange={handleAnswerChange}
             />
           </Col>
         </Row>
