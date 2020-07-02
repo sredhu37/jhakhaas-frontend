@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import DatePicker from 'react-date-picker';
+import moment from 'moment';
+import axios from 'axios';
 import MessageBox from './MessageBox';
 import SecureComponent from './SecureComponent';
 import AdminComponent from './AdminComponent';
+
+const DATE_FORMAT = 'YYYY-MM-DD';
 
 const UploadQuestions = (props) => {
   const [ displayMessageBox, setDisplayMessageBox ] = useState(false);
@@ -139,30 +143,56 @@ const UploadQuestions = (props) => {
     });
 
     // check that there is a date selected which is not in past
+    if (dateForQuestions) {
+      const currentDate = moment().format(DATE_FORMAT);;
+      const selectedDate = moment(dateForQuestions).format(DATE_FORMAT);
+
+      if (currentDate >= selectedDate) {
+        result.isValid = false;
+        result.messages.push('Make sure that you are selecting a date in the future!');
+      }
+    }
 
     // check whether there is a class selected
+    if (classForQuestions.trim() === '') {
+      result.isValid = false;
+      result.messages.push('There needs to be some value for class!');
+    }
 
     return result;
   };
 
-  const submitForm = (event) => {
+  const submitForm = async (event) => {
     event.preventDefault();
 
     const { isValid, messages } = areQuestionsValid();
 
     if (isValid) {
-      console.log("all valid");
-      const updatedQuestionsObj = questions.map(que => {
-        return {
-          ...que,
-          dateAsked: dateForQuestions,
+      try {
+        /* Possible outcomes
+         * 201 => Questions added successfully
+         * 400 => Couldn't add questions
+         */
+        const bodyObject = {
+          questions,
+          date: dateForQuestions,
           class: classForQuestions
         };
-      });
 
-      setQuestions(updatedQuestionsObj);
+        const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/questions/five`, bodyObject);
+        console.log('sunny: ', response);
+        setMessageBoxVariant('success');
+        setMessageBoxText(response.data);
+        setDisplayMessageBox(true);
+      } catch(err) {
+        const msg = err.response ? err.response : err;
+
+        setMessageBoxVariant('danger');
+        setMessageBoxText(msg.toString());
+        setDisplayMessageBox(true);
+      }
     } else {
-      setMessageBoxVariant();
+      setMessageBoxVariant('danger');
       setMessageBoxText(messages[0]);
       setDisplayMessageBox(true);
     }
