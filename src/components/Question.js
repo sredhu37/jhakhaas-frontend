@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import axios from 'axios';
 import SecureComponent from './SecureComponent';
 import MessageBox from './MessageBox';
 
 const Question = (props) => {
+  const [ classForQuestions, setClassForQuestions ] = useState("");
+  const [ subjectForQuestions, setSubjectForQuestions ] = useState("");
   const [ selectedOptions, setSelectedOptions ] = useState({a: false, b: false, c: false, d: false});
   const [ problemStatement, setProblemStatement ] = useState("");
   const [ options, setOptions ] = useState({a: "", b: "", c: "", d: ""});
@@ -12,6 +14,7 @@ const Question = (props) => {
   const [ displayMessageBox, setDisplayMessageBox ] = useState(false);
   const [ messageBoxText, setMessageBoxText ] = useState("");
   const [ messageBoxVariant, setMessageBoxVariant ] = useState("danger");
+  const [ isQuestionReady, setIsQuestionReady ] = useState(false);
 
   const submitAnswer = async (event) => {
     event.preventDefault();
@@ -51,6 +54,58 @@ const Question = (props) => {
     setDisplayMessageBox(true);
   };
 
+  const getTodaysQuestion = async (selectedClass, selectedSubject) => {
+    try {
+      const questionsData = await axios.get(
+        `${process.env.REACT_APP_SERVER_URL}/api/questions/today`,
+        {
+          params: {
+            selectedClass: selectedClass,
+            selectedSubject: selectedSubject
+          }
+        }
+      );
+
+      // sort by question numbers
+      const questionsArr = questionsData.data.sort((que1, que2) => que1.number - que2.number);
+
+      // If question is not solved. Then it can be displayed.
+      // i.e. If question is attempted and solved (correctly), then that question should not be displayed.
+      const questionsToDisplay = questionsArr.filter(que => {
+        if(props.myUser.questionsAttempted && props.myUser.questionsAttempted.length) {
+          const isQuestionSolved = props.myUser.questionsAttempted.some(attemptedQue => (attemptedQue._id.localeCompare(que._id) === 0 && attemptedQue.score > 0));
+          return !isQuestionSolved;
+        } else {
+          return true;
+        }
+      });
+
+      if (questionsToDisplay.length) {
+        const questionObj = questionsToDisplay[0];
+        setQuestion(questionObj);
+
+        if(questionsData.status === 200) {
+          setIsQuestionReady(true);
+          setProblemStatement(questionObj.problemStatement);
+          setOptions(questionObj.options);
+        } else {
+          throw new Error(`Issue in getting today's question. Inform Administrator immediately!`);
+        }
+      } else if(questionsArr.length && !questionsToDisplay.length) {
+        setMessageBoxText(`Congratulations! You have solved all ${selectedSubject} questions for today for class ${selectedClass}!`);
+      } else {
+        throw new Error(`Unhandled scenario for getting today's question. Inform Administrator immediately!`);
+      }
+    } catch(error) {
+      const msg = error.response ? error.response.data : error;
+      setIsQuestionReady(false);
+
+      setMessageBoxText(msg.toString());
+      setMessageBoxVariant('danger');
+      setDisplayMessageBox(true);
+    }
+  };
+
   const handleSelections = (event) => {
     const key = event.target.id;
     const newValue = !selectedOptions[key];
@@ -58,86 +113,105 @@ const Question = (props) => {
     setSelectedOptions({...selectedOptions, [key]: newValue});
   };
 
-  const getOptionsForm = () => {
+  const getOptionsForm = (showQuestion) => {
     const optionsKeys = Object.keys(options);
 
-    return(
-      <Form>
-        {
-          optionsKeys.map(key => {
-            return (<Form.Group key={key}>
-              <Form.Check
-                type="checkbox"
-                label={key + ": " + options[key]}
-                id={key}
-                checked={selectedOptions[key]}
-                onChange={handleSelections}
-              />  
-            </Form.Group>)
-          })
-        }
-
-        <Button variant="primary" type="submit" onClick={ submitAnswer }>
-          Submit
-        </Button>
-      </Form>
-    );
+    if(showQuestion) {
+      return(
+        <Form>
+          <h2>Question</h2>
+          <p>{problemStatement}</p>
+          <br />
+          {
+            optionsKeys.map(key => {
+              return (<Form.Group key={key}>
+                <Form.Check
+                  type="checkbox"
+                  label={key + ": " + options[key]}
+                  id={key}
+                  checked={selectedOptions[key]}
+                  onChange={handleSelections}
+                />  
+              </Form.Group>)
+            })
+          }
+  
+          <Button variant="primary" type="submit" onClick={ submitAnswer }>
+            Submit
+          </Button>
+        </Form>
+      );
+    } else {
+      return null;
+    }
   };
 
-  // Empty array as the second argument means "Run only once after render"
-  // Equivalent to ComponentDidMount method for a class component
-  useEffect(() => {
-    const getTodaysQuestion = async () => {
-      const errMsg = `Issue in getting today's question. Inform Administrator immediately!`;
-      try {
-        const questionData = await axios.get(
-          `${process.env.REACT_APP_SERVER_URL}/api/questions/today`
-        );
-  
-        const questionObj = questionData.data[0];
-        setQuestion(questionObj);
-  
-        if(questionData.status === 200) {
-          setProblemStatement(questionObj.problemStatement);
-          setOptions(questionObj.options);
-        } else {
-          throw new Error(errMsg);
-        }
-      } catch(error) {
-        setMessageBoxText(`Unable to load questions. Inform Administrator immediately!`);
-        setMessageBoxVariant('danger');
-        setDisplayMessageBox(true);
-      }
-    };
+  const handleClassChange = async (event) => {
+    setClassForQuestions(event.target.value);
+    await getQuestion(event.target.value, subjectForQuestions);
+  };
 
-    getTodaysQuestion();
-  }, []);
+  const handleSubjectChange = async (event) => {
+    setSubjectForQuestions(event.target.value);
+    await getQuestion(classForQuestions, event.target.value);
+  };
 
-    return (
-      <SecureComponent isLoggedIn={props.isLoggedIn} component={
-        <div className="Question">
-          <MessageBox
-            message={ messageBoxText }
-            variant={ messageBoxVariant }
-            displayMessageBox={ displayMessageBox }
-            setDisplayMessageBox={ setDisplayMessageBox }
-          />
-          <Container fluid>
-            <Row>
-              <Col sm={1} xs={0} />
-              <Col sm={10} xs={12} className="containerColumn">
-                Today's Question
-                <hr />
-                <p>{problemStatement}</p>
-                <br />
-                {getOptionsForm()}
-              </Col>
-              <Col sm={1} xs={0} />
-            </Row>
-          </Container>
-        </div>  
-      } />
-    );
+  const getQuestion = async (selectedClass, selectedSubject) => {
+    if(selectedClass.trim() !== '' && selectedSubject.trim() !== '') {
+      setIsQuestionReady(true);
+      await getTodaysQuestion(selectedClass, selectedSubject);
+    } else {
+      console.log('Select proper values for class and subject');
+      setIsQuestionReady(false);
+    }
+  };
+
+  return (
+    <SecureComponent isLoggedIn={props.isLoggedIn} component={
+      <div className="Question">
+        <MessageBox
+          message={ messageBoxText }
+          variant={ messageBoxVariant }
+          displayMessageBox={ displayMessageBox }
+          setDisplayMessageBox={ setDisplayMessageBox }
+        />
+        <Container fluid>
+          <Row>
+            <Col sm={1} xs={0} />
+            <Col sm={10} xs={12} className="containerColumn">
+              <Form>
+                <Form.Group>
+                  <Form.Label>Select class</Form.Label>
+                  <Form.Control className="selectClass" as="select" value={classForQuestions} onChange={handleClassChange}>
+                    <option></option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                    <option>11</option>
+                    <option>12</option>
+                  </Form.Control>
+                  <Form.Label>Select subject</Form.Label>
+                  <Form.Control className="selectClass" as="select" value={subjectForQuestions} onChange={handleSubjectChange}>
+                    <option></option>
+                    <option>Mathematics</option>
+                    <option>Physics</option>
+                    <option>Chemistry</option>
+                    <option>Biology</option>
+                  </Form.Control>
+                </Form.Group>
+              </Form>
+              <br />
+              {getOptionsForm(isQuestionReady)}
+            </Col>
+            <Col sm={1} xs={0} />
+          </Row>
+        </Container>
+      </div>  
+    } />
+  );
 };
 
 export default Question;

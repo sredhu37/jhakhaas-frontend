@@ -17,7 +17,6 @@ hr {
 .homeAccordian {
   margin-top: 5%;
   text-align: justify;
-  opacity: 0.95;
 }
 
 .personPic {
@@ -41,14 +40,11 @@ hr {
   padding: 20px;
   background: white;
   text-align: center;
-  opacity: 0.95;
-  height: 80vh;
   box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.3);
   border: 3px solid white;
 }
 
 .profileCard {
-  opacity: 0.95;
   margin: 5%;
   padding: 5%;
 }

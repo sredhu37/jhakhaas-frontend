@@ -22,7 +22,10 @@ const App = () => {
         />
         <Switch>
           <Route path="/question">
-            <Question isLoggedIn={isLoggedIn} />
+            <Question
+              isLoggedIn={isLoggedIn}
+              myUser={myUser}
+            />
           </Route>
           <Route path="/profile">
             <Profile

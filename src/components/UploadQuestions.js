@@ -12,8 +12,8 @@ const DATE_FORMAT = 'YYYY-MM-DD';
 const UploadQuestions = (props) => {
   const initialStates = {
     dateForQuestions: new Date(),
-    classForQuestions: 5,
-    subjectForQuestions: "Mathematics",
+    classForQuestions: "",
+    subjectForQuestions: "",
     questions: [
       {
         number: 1,
@@ -159,7 +159,7 @@ const UploadQuestions = (props) => {
       const currentDate = moment().format(DATE_FORMAT);;
       const selectedDate = moment(dateForQuestions).format(DATE_FORMAT);
 
-      if (currentDate >= selectedDate) {
+      if (currentDate > selectedDate) {
         result.isValid = false;
         result.messages.push('Make sure that you are selecting a date in the future!');
       }
@@ -241,6 +241,7 @@ const UploadQuestions = (props) => {
                 <Form.Group>
                   <Form.Label>These questions are for which class?</Form.Label>
                   <Form.Control className="selectClass" as="select" value={classForQuestions} onChange={handleClassChange}>
+                    <option></option>
                     <option>5</option>
                     <option>6</option>
                     <option>7</option>
@@ -252,6 +253,7 @@ const UploadQuestions = (props) => {
                   </Form.Control>
                   <Form.Label>These questions are for which subject?</Form.Label>
                   <Form.Control className="selectClass" as="select" value={subjectForQuestions} onChange={handleSubjectChange}>
+                    <option></option>
                     <option>Mathematics</option>
                     <option>Physics</option>
                     <option>Chemistry</option>
