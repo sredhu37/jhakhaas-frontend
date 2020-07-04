@@ -10,98 +10,105 @@ import AdminComponent from './AdminComponent';
 const DATE_FORMAT = 'YYYY-MM-DD';
 
 const UploadQuestions = (props) => {
+  const initialStates = {
+    dateForQuestions: new Date(),
+    classForQuestions: 5,
+    subjectForQuestions: "Mathematics",
+    questions: [
+      {
+        number: 1,
+        problemStatement: "",
+        options: {
+          a: "",
+          b: "",
+          c: "",
+          d: ""
+        },
+        answer: {
+          a: false,
+          b: false,
+          c: false,
+          d: false
+        }
+      },
+      {
+        number: 2,
+        problemStatement: "",
+        options: {
+          a: "",
+          b: "",
+          c: "",
+          d: ""
+        },
+        answer: {
+          a: false,
+          b: false,
+          c: false,
+          d: false
+        },
+        finalAnswersString: ""
+      },
+      {
+        number: 3,
+        problemStatement: "",
+        options: {
+          a: "",
+          b: "",
+          c: "",
+          d: ""
+        },
+        answer: {
+          a: false,
+          b: false,
+          c: false,
+          d: false
+        },
+        finalAnswersString: ""
+      },
+      {
+        number: 4,
+        problemStatement: "",
+        options: {
+          a: "",
+          b: "",
+          c: "",
+          d: ""
+        },
+        answer: {
+          a: false,
+          b: false,
+          c: false,
+          d: false
+        },
+        finalAnswersString: ""
+      },
+      {
+        number: 5,
+        problemStatement: "",
+        options: {
+          a: "",
+          b: "",
+          c: "",
+          d: ""
+        },
+        answer: {
+          a: false,
+          b: false,
+          c: false,
+          d: false
+        },
+        finalAnswersString: ""
+      }
+    ]
+  };
+
   const [ displayMessageBox, setDisplayMessageBox ] = useState(false);
   const [ messageBoxText, setMessageBoxText ] = useState("");
   const [ messageBoxVariant, setMessageBoxVariant ] = useState("danger");
-  const [ dateForQuestions, setDateForQuestions ] = useState(new Date());
-  const [ classForQuestions, setClassForQuestions ] = useState(5);
-  const [ subjectForQuestions, setSubjectForQuestions ] = useState("Mathematics");
-  const [ questions, setQuestions ] = useState([
-    {
-      number: 1,
-      problemStatement: "",
-      options: {
-        a: "",
-        b: "",
-        c: "",
-        d: ""
-      },
-      answer: {
-        a: false,
-        b: false,
-        c: false,
-        d: false
-      }
-    },
-    {
-      number: 2,
-      problemStatement: "",
-      options: {
-        a: "",
-        b: "",
-        c: "",
-        d: ""
-      },
-      answer: {
-        a: false,
-        b: false,
-        c: false,
-        d: false
-      },
-      finalAnswersString: ""
-    },
-    {
-      number: 3,
-      problemStatement: "",
-      options: {
-        a: "",
-        b: "",
-        c: "",
-        d: ""
-      },
-      answer: {
-        a: false,
-        b: false,
-        c: false,
-        d: false
-      },
-      finalAnswersString: ""
-    },
-    {
-      number: 4,
-      problemStatement: "",
-      options: {
-        a: "",
-        b: "",
-        c: "",
-        d: ""
-      },
-      answer: {
-        a: false,
-        b: false,
-        c: false,
-        d: false
-      },
-      finalAnswersString: ""
-    },
-    {
-      number: 5,
-      problemStatement: "",
-      options: {
-        a: "",
-        b: "",
-        c: "",
-        d: ""
-      },
-      answer: {
-        a: false,
-        b: false,
-        c: false,
-        d: false
-      },
-      finalAnswersString: ""
-    }
-  ]);
+  const [ dateForQuestions, setDateForQuestions ] = useState(initialStates.dateForQuestions);
+  const [ classForQuestions, setClassForQuestions ] = useState(initialStates.classForQuestions);
+  const [ subjectForQuestions, setSubjectForQuestions ] = useState(initialStates.subjectForQuestions);
+  const [ questions, setQuestions ] = useState(initialStates.questions);
 
   const handleDateChange = (date) => {
     console.log("date: ", date);
@@ -191,7 +198,12 @@ const UploadQuestions = (props) => {
         };
 
         const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/questions/five`, bodyObject);
-        console.log('sunny: ', response);
+
+        setDateForQuestions(initialStates.dateForQuestions);
+        setClassForQuestions(initialStates.classForQuestions);
+        setSubjectForQuestions(initialStates.subjectForQuestions);
+        setQuestions(initialStates.questions);
+
         setMessageBoxVariant('success');
         setMessageBoxText(response.data);
         setDisplayMessageBox(true);
