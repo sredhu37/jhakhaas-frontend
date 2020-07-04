@@ -238,51 +238,55 @@ const UploadQuestions = (props) => {
               <Row>
                 <Col sm={1} xs={0} />
                 <Col sm={10} xs={12} className="containerColumn">
-                  <Row>
-                    <Col sm={3} xs={1} />
-                    <Col sm={6} xs={10}>
-                      <Form.Group>
-                        <Form.Label>These questions are for which class?</Form.Label>
-                        <Form.Control
-                          className="selectClass"
-                          as="select"
-                          value={classForQuestions}
-                          onChange={handleClassChange}
-                        >
-                          <option></option>
-                          <option>5</option>
-                          <option>6</option>
-                          <option>7</option>
-                          <option>8</option>
-                          <option>9</option>
-                          <option>10</option>
-                          <option>11</option>
-                          <option>12</option>
-                        </Form.Control>
-                        <Form.Label>These questions are for which subject?</Form.Label>
-                        <Form.Control
-                          className="selectClass"
-                          as="select"
-                          value={subjectForQuestions}
-                          onChange={handleSubjectChange}
-                        >
-                          <option></option>
-                          <option>Mathematics</option>
-                          <option>Physics</option>
-                          <option>Chemistry</option>
-                          <option>Biology</option>
-                        </Form.Control>
-                        <Form.Label>Which date are these questions for?</Form.Label>
-                        <div className="datePicker">
-                          <DatePicker value={dateForQuestions} onChange={handleDateChange} />
-                        </div>
-                        <Button variant="primary" onClick={submitForm} className="submitButton" >
-                          Upload all 5 questions
-                        </Button>
-                      </Form.Group>
+                  <Form.Group as={Row}>
+                    <Form.Label column xs={4}>Select class</Form.Label>
+                    <Col xs={8} sm={6}>
+                      <Form.Control
+                        className="selectClass"
+                        as="select"
+                        value={classForQuestions}
+                        onChange={handleClassChange}
+                      >
+                        <option></option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                        <option>10</option>
+                        <option>11</option>
+                        <option>12</option>
+                      </Form.Control>
                     </Col>
-                    <Col sm={3} xs={1} />
-                  </Row>
+                  </Form.Group>
+                  <Form.Group as={Row}>  
+                    <Form.Label column xs={4}>Select subject</Form.Label>
+                    <Col xs={8} sm={6}>
+                      <Form.Control
+                        className="selectClass"
+                        as="select"
+                        value={subjectForQuestions}
+                        onChange={handleSubjectChange}
+                      >
+                        <option></option>
+                        <option>Mathematics</option>
+                        <option>Physics</option>
+                        <option>Chemistry</option>
+                        <option>Biology</option>
+                      </Form.Control>
+                    </Col>
+                  </Form.Group>
+                  <Form.Group as={Row}>  
+                    <Form.Label column xs={4}>Select date</Form.Label>
+                    <Col xs={8} sm={6}>
+                      <div className="datePicker">
+                        <DatePicker value={dateForQuestions} onChange={handleDateChange} />
+                      </div>
+                    </Col>
+                  </Form.Group>
+                  <Button variant="primary" onClick={submitForm} className="submitButton" >
+                    Upload all 5 questions
+                  </Button>
                 </Col>
                 <Col sm={1} xs={0} />
               </Row>

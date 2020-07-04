@@ -180,27 +180,33 @@ const Question = (props) => {
             <Col sm={1} xs={0} />
             <Col sm={10} xs={12} className="containerColumn">
               <Form>
-                <Form.Group>
-                  <Form.Label>Select class</Form.Label>
-                  <Form.Control className="selectClass" as="select" value={classForQuestions} onChange={handleClassChange}>
-                    <option></option>
-                    <option>5</option>
-                    <option>6</option>
-                    <option>7</option>
-                    <option>8</option>
-                    <option>9</option>
-                    <option>10</option>
-                    <option>11</option>
-                    <option>12</option>
-                  </Form.Control>
-                  <Form.Label>Select subject</Form.Label>
-                  <Form.Control className="selectClass" as="select" value={subjectForQuestions} onChange={handleSubjectChange}>
-                    <option></option>
-                    <option>Mathematics</option>
-                    <option>Physics</option>
-                    <option>Chemistry</option>
-                    <option>Biology</option>
-                  </Form.Control>
+                <Form.Group as={Row}>
+                  <Form.Label column xs={4}>Select class</Form.Label>
+                  <Col xs={8} sm={6}>
+                    <Form.Control className="selectClass" as="select" value={classForQuestions} onChange={handleClassChange}>
+                      <option></option>
+                      <option>5</option>
+                      <option>6</option>
+                      <option>7</option>
+                      <option>8</option>
+                      <option>9</option>
+                      <option>10</option>
+                      <option>11</option>
+                      <option>12</option>
+                    </Form.Control>
+                  </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                  <Form.Label column xs={4}>Select subject</Form.Label>
+                  <Col xs={8} sm={6}>
+                    <Form.Control className="selectClass" as="select" value={subjectForQuestions} onChange={handleSubjectChange}>
+                      <option></option>
+                      <option>Mathematics</option>
+                      <option>Physics</option>
+                      <option>Chemistry</option>
+                      <option>Biology</option>
+                    </Form.Control>
+                  </Col>
                 </Form.Group>
               </Form>
               <br />

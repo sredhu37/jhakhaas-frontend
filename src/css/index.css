@@ -70,13 +70,13 @@ hr {
   margin: 10px;
 }
 
-.selectClass {
+.controlGroup {
   margin: 20px;
 }
 
 .datePicker {
   display: block;
-  margin: 20px;
+  width: 100%;
 }
 
 .submitButton {
