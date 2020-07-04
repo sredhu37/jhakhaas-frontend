@@ -238,35 +238,51 @@ const UploadQuestions = (props) => {
               <Row>
                 <Col sm={1} xs={0} />
                 <Col sm={10} xs={12} className="containerColumn">
-                <Form.Group>
-                  <Form.Label>These questions are for which class?</Form.Label>
-                  <Form.Control className="selectClass" as="select" value={classForQuestions} onChange={handleClassChange}>
-                    <option></option>
-                    <option>5</option>
-                    <option>6</option>
-                    <option>7</option>
-                    <option>8</option>
-                    <option>9</option>
-                    <option>10</option>
-                    <option>11</option>
-                    <option>12</option>
-                  </Form.Control>
-                  <Form.Label>These questions are for which subject?</Form.Label>
-                  <Form.Control className="selectClass" as="select" value={subjectForQuestions} onChange={handleSubjectChange}>
-                    <option></option>
-                    <option>Mathematics</option>
-                    <option>Physics</option>
-                    <option>Chemistry</option>
-                    <option>Biology</option>
-                  </Form.Control>
-                  <Form.Label>Which date are these questions for?</Form.Label>
-                  <div className="datePicker">
-                    <DatePicker value={dateForQuestions} onChange={handleDateChange} />
-                  </div>
-                  <Button variant="primary" onClick={submitForm} className="submitButton" >
-                    Upload all 5 questions
-                  </Button>
-                </Form.Group>
+                  <Row>
+                    <Col sm={3} xs={1} />
+                    <Col sm={6} xs={10}>
+                      <Form.Group>
+                        <Form.Label>These questions are for which class?</Form.Label>
+                        <Form.Control
+                          className="selectClass"
+                          as="select"
+                          value={classForQuestions}
+                          onChange={handleClassChange}
+                        >
+                          <option></option>
+                          <option>5</option>
+                          <option>6</option>
+                          <option>7</option>
+                          <option>8</option>
+                          <option>9</option>
+                          <option>10</option>
+                          <option>11</option>
+                          <option>12</option>
+                        </Form.Control>
+                        <Form.Label>These questions are for which subject?</Form.Label>
+                        <Form.Control
+                          className="selectClass"
+                          as="select"
+                          value={subjectForQuestions}
+                          onChange={handleSubjectChange}
+                        >
+                          <option></option>
+                          <option>Mathematics</option>
+                          <option>Physics</option>
+                          <option>Chemistry</option>
+                          <option>Biology</option>
+                        </Form.Control>
+                        <Form.Label>Which date are these questions for?</Form.Label>
+                        <div className="datePicker">
+                          <DatePicker value={dateForQuestions} onChange={handleDateChange} />
+                        </div>
+                        <Button variant="primary" onClick={submitForm} className="submitButton" >
+                          Upload all 5 questions
+                        </Button>
+                      </Form.Group>
+                    </Col>
+                    <Col sm={3} xs={1} />
+                  </Row>
                 </Col>
                 <Col sm={1} xs={0} />
               </Row>
