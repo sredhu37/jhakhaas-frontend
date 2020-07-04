@@ -14,7 +14,8 @@ const UploadQuestions = (props) => {
   const [ messageBoxText, setMessageBoxText ] = useState("");
   const [ messageBoxVariant, setMessageBoxVariant ] = useState("danger");
   const [ dateForQuestions, setDateForQuestions ] = useState(new Date());
-  const [ classForQuestions, setClassForQuestions ] = useState("OTHER");
+  const [ classForQuestions, setClassForQuestions ] = useState(5);
+  const [ subjectForQuestions, setSubjectForQuestions ] = useState("Mathematics");
   const [ questions, setQuestions ] = useState([
     {
       number: 1,
@@ -111,6 +112,10 @@ const UploadQuestions = (props) => {
     setClassForQuestions(event.target.value);
   };
 
+  const handleSubjectChange = (event) => {
+    setSubjectForQuestions(event.target.value);
+  };
+
   const areQuestionsValid = () => {
     const result = { 
       isValid: true,
@@ -154,9 +159,14 @@ const UploadQuestions = (props) => {
     }
 
     // check whether there is a class selected
-    if (classForQuestions.trim() === '') {
+    if (classForQuestions < 5 || classForQuestions > 12) {
       result.isValid = false;
-      result.messages.push('There needs to be some value for class!');
+      result.messages.push('Please select a class between 5 and 12!');
+    }
+
+    if(subjectForQuestions.trim() === '') {
+      result.isValid = false;
+      result.messages.push('Please select a proper subject!');
     }
 
     return result;
@@ -176,7 +186,8 @@ const UploadQuestions = (props) => {
         const bodyObject = {
           questions,
           date: dateForQuestions,
-          class: classForQuestions
+          class: classForQuestions,
+          subject: subjectForQuestions,
         };
 
         const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/questions/five`, bodyObject);
@@ -185,7 +196,8 @@ const UploadQuestions = (props) => {
         setMessageBoxText(response.data);
         setDisplayMessageBox(true);
       } catch(err) {
-        const msg = err.response ? err.response : err;
+        console.log(err.response);
+        const msg = err.response ? err.response.data : err;
 
         setMessageBoxVariant('danger');
         setMessageBoxText(msg.toString());
@@ -217,10 +229,6 @@ const UploadQuestions = (props) => {
                 <Form.Group>
                   <Form.Label>These questions are for which class?</Form.Label>
                   <Form.Control className="selectClass" as="select" value={classForQuestions} onChange={handleClassChange}>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
                     <option>5</option>
                     <option>6</option>
                     <option>7</option>
@@ -229,7 +237,13 @@ const UploadQuestions = (props) => {
                     <option>10</option>
                     <option>11</option>
                     <option>12</option>
-                    <option>OTHER</option>
+                  </Form.Control>
+                  <Form.Label>These questions are for which subject?</Form.Label>
+                  <Form.Control className="selectClass" as="select" value={subjectForQuestions} onChange={handleSubjectChange}>
+                    <option>Mathematics</option>
+                    <option>Physics</option>
+                    <option>Chemistry</option>
+                    <option>Biology</option>
                   </Form.Control>
                   <Form.Label>Which date are these questions for?</Form.Label>
                   <div className="datePicker">
