@@ -1,24 +1,20 @@
 import React, { useEffect } from 'react';
 import { Accordion, Card, Container, Row, Col } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
-import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { requestGetLoggedInUser } from '../redux/actions/userAction';
 
 const Home = (props) => {
-  axios.defaults.withCredentials = true;
-  const history = useHistory();
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
 
   useEffect(() => {
-    const checkIfLoggedIn = async () => {
-      try {
-        await axios.get(`${process.env.REACT_APP_SERVER_URL}/auth/isLoggedIn`);
-        props.setIsLoggedIn(true);
-        history.push("/profile");
-      } catch(error) {
-        props.setIsLoggedIn(false);
+    const getProfile = async () => {
+      if(!isLoggedIn) {
+        dispatch(requestGetLoggedInUser());
       }
-    }
+    };
 
-    checkIfLoggedIn();
+    getProfile();
   });
 
   return(
@@ -27,7 +23,7 @@ const Home = (props) => {
         <Row>
           <Col xs={1} sm={3} />
           <Col xs={10} sm={6}>
-            <Accordion className="homeAccordian">
+            <Accordion defaultActiveKey="0" className="homeAccordian">
               <Card>
                 <Accordion.Toggle as={Card.Header} eventKey="0">
                   What is this app about?
@@ -37,7 +33,7 @@ const Home = (props) => {
                     <p>
                       We believe that improving oneself is a continuous process.
                       Hence, we have come up with a simple concept to improve one's problem solving skill.
-                      That is just solve <b>ONE QUESTION PER DAY</b>.
+                      That is just solve <b>FIVE QUESTIONS PER DAY</b>.
                     </p>
                     <p>
                       By following this principle, you will not feel overwhelmed and you will learn something everyday.
@@ -86,7 +82,7 @@ const Home = (props) => {
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="3">
                   <Card.Body>
-                    Please reach out to me at <b><i>redhu.sunny1994@gmail.com</i></b> in any of the following cases:
+                    Please reach out to us at <b><i>abcdpractice1234@gmail.com</i></b> in any of the following cases:
                     <ul>
                       <li>
                         You have good interesting problems you want on this app.

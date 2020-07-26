@@ -7,13 +7,14 @@ body, html {
   height: 100%;
   margin: 0;
 
-  background-image: url("../static/bg_login3.jpg");
+  background-color: #E9ECEC;
+  // background-image: url("../static/bg_login3.jpg");
 
-  /* Center and scale the image nicely */
-  background-position: center;
-  background-attachment: fixed;
-  // background-repeat: no-repeat;
-  background-size: cover;
+  // /* Center and scale the image nicely */
+  // background-position: center;
+  // background-attachment: fixed;
+  // // background-repeat: no-repeat;
+  // background-size: cover;
 }
 
 hr {
@@ -31,8 +32,22 @@ hr {
   margin-right: 10px;
   &:hover {
     cursor: pointer;
-    border: 1px solid #E9EAEE;
+    border: 1px solid #343A40;
   }
+}
+
+.logoPic {
+  height: 50px;
+  width: 120px;
+  margin-right: 10px;
+  &:hover {
+    cursor: pointer;
+    border: 1px solid #343A40;
+  }
+}
+
+Button {
+  margin: 10px;
 }
 
 @import 'MessageBox';
@@ -40,3 +55,4 @@ hr {
 @import 'Profile';
 @import 'Dashboard';
 @import 'UploadQuestions';
+@import 'Prompt';

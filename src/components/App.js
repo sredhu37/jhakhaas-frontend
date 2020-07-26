@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import axios from 'axios';
 import Question from './Question';
 import NavBar from './NavBar';
 import Home from './Home';
@@ -9,48 +10,30 @@ import Profile from './Profile';
 import Unauthorized from './Unauthorized';
 
 const App = () => {
-  const [ isLoggedIn, setIsLoggedIn ] = useState(false);
-  const [ myUser, setMyUser ] = useState({});
+  axios.defaults.withCredentials = true;
 
   return(
     <div>
       <Router>
-        <NavBar
-          isLoggedIn={isLoggedIn}
-          setIsLoggedIn={setIsLoggedIn}
-          myUser={myUser}
-        />
+        <NavBar />
         <Switch>
           <Route path="/question">
-            <Question
-              isLoggedIn={isLoggedIn}
-              myUser={myUser}
-            />
+            <Question />
           </Route>
           <Route path="/profile">
-            <Profile
-              isLoggedIn={isLoggedIn}
-              myUser={myUser}
-              setMyUser={setMyUser}
-            />
+            <Profile />
           </Route>
           <Route path="/dashboard">
-            <Dashboard
-              isLoggedIn={isLoggedIn}
-              myUser={myUser}
-            />
+            <Dashboard />
           </Route>
           <Route path="/upload-questions">
-            <UploadQuestions
-              isLoggedIn={isLoggedIn}
-              myUser={myUser}
-            />
+            <UploadQuestions />
           </Route>
           <Route path="/unauthorized">
-            <Unauthorized isLoggedIn={isLoggedIn} />
+            <Unauthorized />
           </Route>
           <Route path="/" exact>
-            <Home isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+            <Home />
           </Route>
         </Switch>
       </Router>

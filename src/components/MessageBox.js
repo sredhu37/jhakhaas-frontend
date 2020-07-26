@@ -1,11 +1,17 @@
 import React from "react";
 import { Modal, Button, Container, Row, Col } from "react-bootstrap";
+import { hideMessageBox } from "../redux/actions/messageBoxAction";
+import { useSelector, useDispatch } from 'react-redux';
 
-const MessageBox = (props) => {
-  const { message, variant, displayMessageBox, setDisplayMessageBox } = props;
+const MessageBox = () => {
+  const dispatch = useDispatch();
+
+  const message = useSelector(state => state.messageBox.text);
+  const variant = useSelector(state => state.messageBox.variant);
+  const displayMessageBox = useSelector(state => state.messageBox.show);
 
   const handleClose = () => {
-    setDisplayMessageBox(false);
+    dispatch(hideMessageBox());
   }
 
   return (

@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import SecureComponent from './SecureComponent';
+import { useSelector } from 'react-redux';
 
-const Dashboard = (props) => {
+const Dashboard = () => {
+  const myUser = useSelector(state => state.user.myUser);
   const [ topLeaders, setTopLeaders ] = useState([]);
 
   const loadLeaders = () => {
@@ -35,28 +37,28 @@ const Dashboard = (props) => {
   }
 
   const loadMyData = () => {
-    const alreadyInTopLeaders = topLeaders.find(user => user._id === props.myUser._id);
+    const alreadyInTopLeaders = topLeaders.find(user => user._id === myUser._id);
 
     if(alreadyInTopLeaders) {
       return null;
     } else {
       return (
-        <tr key={props.myUser._id}>
-          <td>{props.myUser.rank}</td>
+        <tr key={myUser._id}>
+          <td>{myUser.rank}</td>
           <td>
             <OverlayTrigger
               placement='right'
               overlay={
                 <Tooltip>
-                  {props.myUser.email}
+                  {myUser.email}
                 </Tooltip>
               }
             >
-              <img src={props.myUser.pictureUrl} className="dashboardImg" alt="userPic"></img>
+              <img src={myUser.pictureUrl} className="dashboardImg" alt="userPic"></img>
             </OverlayTrigger>
           </td>
-          <td>{ " " + props.myUser.name }</td>
-          <td>{props.myUser.totalScore}</td>
+          <td>{ " " + myUser.name }</td>
+          <td>{myUser.totalScore}</td>
         </tr>
       );
     }
@@ -77,7 +79,7 @@ const Dashboard = (props) => {
   }, []);
 
   return(
-    <SecureComponent isLoggedIn={props.isLoggedIn} component={
+    <SecureComponent component={
       <div>
         <Table striped bordered hover className="dashboardTable">
           <thead>

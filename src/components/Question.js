@@ -3,17 +3,19 @@ import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import axios from 'axios';
 import SecureComponent from './SecureComponent';
 import MessageBox from './MessageBox';
+import { useSelector, useDispatch } from "react-redux";
+import { showMessageBox } from "../redux/actions/messageBoxAction";
 
-const Question = (props) => {
+const Question = () => {
+  const dispatch = useDispatch();
+  const myUser = useSelector(state => state.user.myUser);
+
   const [ classForQuestions, setClassForQuestions ] = useState("");
   const [ subjectForQuestions, setSubjectForQuestions ] = useState("");
   const [ selectedOptions, setSelectedOptions ] = useState({a: false, b: false, c: false, d: false});
   const [ problemStatement, setProblemStatement ] = useState("");
   const [ options, setOptions ] = useState({a: "", b: "", c: "", d: ""});
   const [ question, setQuestion ] = useState();
-  const [ displayMessageBox, setDisplayMessageBox ] = useState(false);
-  const [ messageBoxText, setMessageBoxText ] = useState("");
-  const [ messageBoxVariant, setMessageBoxVariant ] = useState("danger");
   const [ isQuestionReady, setIsQuestionReady ] = useState(false);
 
   const submitAnswer = async (event) => {
@@ -31,16 +33,13 @@ const Question = (props) => {
       if(answerResponse) {
         switch(answerResponse.status) {
           case 200:
-            setMessageBoxText('Correct answer. Check your Profile for score!');
-            setMessageBoxVariant('success');
+            dispatch(showMessageBox('Correct answer. Check your Profile for score!', 'success'));
             break;
           case 204:
-            setMessageBoxText('Incorrect answer');
-            setMessageBoxVariant('danger');
+            dispatch(showMessageBox('Incorrect answer!', 'danger'));
             break;
           case 208:
-            setMessageBoxText('Number of tries exceeded 3');
-            setMessageBoxVariant('danger');
+            dispatch(showMessageBox('Number of tries exceeded 3!', 'danger'));
             break;
           default:
             throw new Error(`Unhandled Response status code: ${answerResponse.status}`);
@@ -48,10 +47,8 @@ const Question = (props) => {
       }
     }
     catch(err) {
-      setMessageBoxText(err);
-      setMessageBoxVariant('danger');
+      dispatch(showMessageBox(err, 'danger'));
     }
-    setDisplayMessageBox(true);
   };
 
   const getTodaysQuestion = async (selectedClass, selectedSubject) => {
@@ -72,8 +69,8 @@ const Question = (props) => {
       // If question is not solved. Then it can be displayed.
       // i.e. If question is attempted and solved (correctly), then that question should not be displayed.
       const questionsToDisplay = questionsArr.filter(que => {
-        if(props.myUser.questionsAttempted && props.myUser.questionsAttempted.length) {
-          const isQuestionSolved = props.myUser.questionsAttempted.some(attemptedQue => (attemptedQue._id.localeCompare(que._id) === 0 && attemptedQue.score > 0));
+        if(myUser.questionsAttempted && myUser.questionsAttempted.length) {
+          const isQuestionSolved = myUser.questionsAttempted.some(attemptedQue => (attemptedQue._id.localeCompare(que._id) === 0 && attemptedQue.score > 0));
           return !isQuestionSolved;
         } else {
           return true;
@@ -92,7 +89,7 @@ const Question = (props) => {
           throw new Error(`Issue in getting today's question. Inform Administrator immediately!`);
         }
       } else if(questionsArr.length && !questionsToDisplay.length) {
-        setMessageBoxText(`Congratulations! You have solved all ${selectedSubject} questions for today for class ${selectedClass}!`);
+        dispatch(showMessageBox(`Congratulations! You have solved all ${selectedSubject} questions for today for class ${selectedClass}!`, 'success'));
       } else {
         throw new Error(`Unhandled scenario for getting today's question. Inform Administrator immediately!`);
       }
@@ -100,9 +97,7 @@ const Question = (props) => {
       const msg = error.response ? error.response.data : error;
       setIsQuestionReady(false);
 
-      setMessageBoxText(msg.toString());
-      setMessageBoxVariant('danger');
-      setDisplayMessageBox(true);
+      dispatch(showMessageBox(msg.toString(), 'danger'));
     }
   };
 
@@ -167,14 +162,9 @@ const Question = (props) => {
   };
 
   return (
-    <SecureComponent isLoggedIn={props.isLoggedIn} component={
+    <SecureComponent component={
       <div className="Question">
-        <MessageBox
-          message={ messageBoxText }
-          variant={ messageBoxVariant }
-          displayMessageBox={ displayMessageBox }
-          setDisplayMessageBox={ setDisplayMessageBox }
-        />
+        <MessageBox />
         <Container fluid>
           <Row>
             <Col sm={1} xs={0} />
@@ -183,7 +173,7 @@ const Question = (props) => {
                 <Form.Group as={Row}>
                   <Form.Label column xs={4}>Select class</Form.Label>
                   <Col xs={8} sm={6}>
-                    <Form.Control className="selectClass" as="select" value={classForQuestions} onChange={handleClassChange}>
+                    <Form.Control as="select" value={classForQuestions} onChange={handleClassChange}>
                       <option></option>
                       <option>5</option>
                       <option>6</option>
@@ -199,7 +189,7 @@ const Question = (props) => {
                 <Form.Group as={Row}>
                   <Form.Label column xs={4}>Select subject</Form.Label>
                   <Col xs={8} sm={6}>
-                    <Form.Control className="selectClass" as="select" value={subjectForQuestions} onChange={handleSubjectChange}>
+                    <Form.Control as="select" value={subjectForQuestions} onChange={handleSubjectChange}>
                       <option></option>
                       <option>Mathematics</option>
                       <option>Physics</option>

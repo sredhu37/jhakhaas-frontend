@@ -3,11 +3,7 @@ body, html {
   color: #757576;
   height: 100%;
   margin: 0;
-  background-image: url("../static/bg_login3.jpg");
-  /* Center and scale the image nicely */
-  background-position: center;
-  background-attachment: fixed;
-  background-size: cover;
+  background-color: #E9ECEC;
 }
 
 hr {
@@ -26,7 +22,21 @@ hr {
 }
 .personPic:hover {
   cursor: pointer;
-  border: 1px solid #E9EAEE;
+  border: 1px solid #343A40;
+}
+
+.logoPic {
+  height: 50px;
+  width: 120px;
+  margin-right: 10px;
+}
+.logoPic:hover {
+  cursor: pointer;
+  border: 1px solid #343A40;
+}
+
+Button {
+  margin: 10px;
 }
 
 .MessageBox {
@@ -35,8 +45,8 @@ hr {
 }
 
 .containerColumn {
-  margin-top: 5vh;
-  margin-bottom: 5vh;
+  margin-top: 10px;
+  margin-bottom: 10px;
   padding: 20px;
   background: white;
   text-align: center;
@@ -70,15 +80,24 @@ hr {
   margin: 10px;
 }
 
-.controlGroup {
-  margin: 20px;
-}
-
-.datePicker {
-  display: block;
-  width: 100%;
-}
-
 .submitButton {
   margin: 20px;
+}
+
+.tabContainer {
+  margin: 20px 20px 20px 0;
+}
+
+.tabPane {
+  padding: 20px;
+  border: 3px solid #343A40;
+}
+
+.marginControl {
+  margin-bottom: 10px;
+}
+
+.promptErrorMessage {
+  background-color: #e5bcbf;
+  border: 1px solid #C82333;
 }

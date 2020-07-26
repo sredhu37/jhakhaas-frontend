@@ -1,40 +1,25 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import { useSelector } from 'react-redux';
 import SecureComponent from './SecureComponent';
 
-const Profile = (props) => {
-  useEffect(() => {
-    const getProfile = async () => {
-      try {
-        const profile = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/users/profile`);
-        if(profile) {
-          props.setMyUser(profile.data);
-        } else {
-          throw new Error("Couldn't receive profile from the server. Inform Administrator immediately!")
-        }
-      } catch(error) {
-        console.log(error);
-      }
-    };
-
-    getProfile();
-  }, []);
+const Profile = () => {
+  const myUser = useSelector(state => state.user.myUser);
 
   return(
-    <SecureComponent isLoggedIn={props.isLoggedIn} component={
+    <SecureComponent component={
       <div>
         <Container>
           <Row>
             <Col xs={1} sm={3} />
             <Col xs={10} sm={6}>
             <Card className="profileCard">
-              <Card.Img variant="top" src={ props.myUser.pictureUrl } className="profileImage" />
+              <Card.Img variant="top" src={ myUser.pictureUrl } className="profileImage" />
               <Card.Body>
-                <Card.Title>{ props.myUser.email }</Card.Title>
+                <Card.Title>{ myUser.email }</Card.Title>
                 <Card.Text>
-                  My total score: { props.myUser.totalScore }
+                  My total score: { myUser.totalScore }
                 </Card.Text>
                 <Link to="/dashboard">
                   <Button variant="primary">Check your rank</Button>

@@ -1,14 +1,22 @@
 import React from 'react';
-import { Navbar, Nav, Form, Image, Button } from 'react-bootstrap';
+import { Navbar, Nav, Form, Image, Button, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import personPic from '../static/nopic.png';
+import logoPic from '../static/logo.png';
+import { userLoggedOut } from '../redux/actions/userAction';
 
-const NavBar = (props) => {
+const NavBar = () => {
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
+  const myUser = useSelector(state => state.user.myUser);
+  const loading = useSelector(state => state.loading.show);
+
   const handleLogout = async (event) => {
     event.preventDefault();
 
     // set isLoggedIn to false
-    props.setIsLoggedIn(false);
+    dispatch(userLoggedOut());
 
     window.open(`${process.env.REACT_APP_SERVER_URL}/auth/logout`, "_self");
   };
@@ -19,12 +27,18 @@ const NavBar = (props) => {
     window.open(`${process.env.REACT_APP_SERVER_URL}/auth/google/login`, "_self");
   };
 
-  if(props.isLoggedIn) {
+  if(isLoggedIn) {
     return (
-      <Navbar bg="light" expand="lg">
+      <Navbar bg="dark" variant="dark" expand="lg">
         <Link to="/">
-          <Navbar.Brand>Solve the Sawaal</Navbar.Brand>
+          <Navbar.Brand>
+            <Image
+              src={logoPic}
+              className="logoPic"
+            />
+          </Navbar.Brand>
         </Link>
+        <Nav className="mr-auto" />
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
@@ -36,14 +50,24 @@ const NavBar = (props) => {
             <Nav className="mr-auto">
               <Link to='/profile'>
                 <Image
-                  src={props.myUser.pictureUrl ? props.myUser.pictureUrl : personPic}
+                  src={myUser.pictureUrl ? myUser.pictureUrl : personPic}
                   roundedCircle
                   className="personPic"
                 />
               </Link>
             </Nav>
             <Nav className="mr-auto">
-              <Button variant="danger" onClick={handleLogout}>Logout</Button>
+              {loading 
+                ? <Button variant="danger" disabled><Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                /></Button>
+                : <Button variant="danger" onClick={handleLogout}>Logout</Button>
+              }
+
             </Nav>
           </Form>
         </Navbar.Collapse>
@@ -51,13 +75,28 @@ const NavBar = (props) => {
     );
   } else {
     return (
-      <Navbar bg="light" expand="lg">
+      <Navbar bg="dark" variant="dark" expand="lg">
         <Link to="/">
-          <Navbar.Brand>Solve the Sawaal</Navbar.Brand>
+          <Navbar.Brand>
+            <Image
+              src={logoPic}
+              className="logoPic"
+            />
+          </Navbar.Brand>
         </Link>
+        <Nav className="mr-auto" />
         <Form inline>
           <Nav className="mr-auto">
-            <Button variant="primary" onClick={handleLogin}>Login</Button>
+            {loading 
+              ? <Button variant="success" disabled><Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              /></Button>
+              : <Button variant="success" onClick={handleLogin}>Login</Button>
+            }
           </Nav>
         </Form>
       </Navbar>
