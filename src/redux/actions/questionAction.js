@@ -65,10 +65,9 @@ export const requestGetTodaysQuestions = () => {
       };
 
       const result = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/questions`, { params: requestBody });
-      
+
       switch (result.status) {
         case 200:
-          console.log(`Response: `, result);
           if (result.data.length) {
             const questions = result.data.map(que => (
               {
