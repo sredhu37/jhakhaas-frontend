@@ -93,7 +93,6 @@ export const requestUploadQuestions = () => {
 
     try {
       dispatch(startLoading());
-      // const uploadQuestionsState = getState().uploadQuestions;
       // Update uploader via an action on logging in
       const uploadQuestionsState = {
         ...(getState().uploadQuestions),

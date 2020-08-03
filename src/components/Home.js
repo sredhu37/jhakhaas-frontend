@@ -52,25 +52,16 @@ const Home = (props) => {
                         To login you need to have a gmail account.
                       </li>
                       <li>
-                        After logging in, you will see your <i>Profile</i>.
-                      </li>
-                      <li>
-                        You can click on the <i>Question</i> tab to attempt today's question.
-                      </li>
-                      <li>
-                        You can read the question, solve it and come back later to answer it within the same day.
-                      </li>
-                      <li>
-                        You cannot attempt a question more than 3 times.
+                        You can click on the <b>Question</b> tab to attempt today's questions.
                       </li>
                       <li>
                         For every correct answer, you get 1 point. No negative marking.
                       </li>
                       <li>
-                        Dashboard tab means Leader's dashboard. You can check your current rank there.
+                        <b>Dashboard</b> tab means Leader's dashboard. You can check your current rank there.
                       </li>
                       <li>
-                        To go to your profile page, click on your Photo on the top right corner.
+                        To go to your <b>Profile</b> page, click on your Photo on the top right corner.
                       </li>
                     </ul>
                   </Card.Body>

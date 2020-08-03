@@ -7,3 +7,15 @@
     text-align: center;
     // height: 80vh;
 }
+
+.questionPageContainer {
+    margin: 30px 10px;
+}
+
+.cardQuestion {
+    margin-bottom: 30px;
+    box-shadow: 3px 3px 3px #CCCECF;
+    background-image: url("../static/card-bg.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+}

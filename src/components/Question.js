@@ -1,163 +1,104 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import axios from 'axios';
+import { Container, Row, Col, Form, Button, Spinner } from "react-bootstrap";
 import SecureComponent from './SecureComponent';
 import MessageBox from './MessageBox';
+import QuestionForm from './QuestionHelperComponents/QuestionForm';
+import QuestionsPreviewCards from './QuestionHelperComponents/QuestionsPreviewCards';
 import { useSelector, useDispatch } from "react-redux";
 import { showMessageBox } from "../redux/actions/messageBoxAction";
+import classes from '../hardCoded';
+import {
+  changeClassValue,
+  changeSubjectValue,
+  changeChapterValue,
+  requestGetTodaysQuestions
+} from '../redux/actions/questionAction';
+
 
 const Question = () => {
   const dispatch = useDispatch();
-  const myUser = useSelector(state => state.user.myUser);
 
-  const [ classForQuestions, setClassForQuestions ] = useState("");
-  const [ subjectForQuestions, setSubjectForQuestions ] = useState("");
-  const [ selectedOptions, setSelectedOptions ] = useState({a: false, b: false, c: false, d: false});
-  const [ problemStatement, setProblemStatement ] = useState("");
-  const [ options, setOptions ] = useState({a: "", b: "", c: "", d: ""});
-  const [ question, setQuestion ] = useState();
-  const [ isQuestionReady, setIsQuestionReady ] = useState(false);
+  // const [ question ] = useState();
+
 
   const submitAnswer = async (event) => {
     event.preventDefault();
 
     try {
-      const answerResponse = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}/api/questions/submit`,
-        {
-          question,
-          usersAnswer: selectedOptions
-        }
-      );
-
-      if(answerResponse) {
-        switch(answerResponse.status) {
-          case 200:
-            dispatch(showMessageBox('Correct answer. Check your Profile for score!', 'success'));
-            break;
-          case 204:
-            dispatch(showMessageBox('Incorrect answer!', 'danger'));
-            break;
-          case 208:
-            dispatch(showMessageBox('Number of tries exceeded 3!', 'danger'));
-            break;
-          default:
-            throw new Error(`Unhandled Response status code: ${answerResponse.status}`);
-        }
-      }
+      console.log(`submitAnswerClicked`);
     }
     catch(err) {
       dispatch(showMessageBox(err, 'danger'));
     }
   };
 
-  const getTodaysQuestion = async (selectedClass, selectedSubject) => {
-    try {
-      const questionsData = await axios.get(
-        `${process.env.REACT_APP_SERVER_URL}/api/questions/today`,
-        {
-          params: {
-            selectedClass: selectedClass,
-            selectedSubject: selectedSubject
-          }
-        }
-      );
+  const selectedClass = useSelector(state => state.question.class);
+  const selectedSubject = useSelector(state => state.question.subject);
+  const selectedChapter = useSelector(state => state.question.chapter);
+  const loading = useSelector(state => state.loading.show);
 
-      // sort by question numbers
-      const questionsArr = questionsData.data.sort((que1, que2) => que1.number - que2.number);
-
-      // If question is not solved. Then it can be displayed.
-      // i.e. If question is attempted and solved (correctly), then that question should not be displayed.
-      const questionsToDisplay = questionsArr.filter(que => {
-        if(myUser.questionsAttempted && myUser.questionsAttempted.length) {
-          const isQuestionSolved = myUser.questionsAttempted.some(attemptedQue => (attemptedQue._id.localeCompare(que._id) === 0 && attemptedQue.score > 0));
-          return !isQuestionSolved;
-        } else {
-          return true;
-        }
-      });
-
-      if (questionsToDisplay.length) {
-        const questionObj = questionsToDisplay[0];
-        setQuestion(questionObj);
-
-        if(questionsData.status === 200) {
-          setIsQuestionReady(true);
-          setProblemStatement(questionObj.problemStatement);
-          setOptions(questionObj.options);
-        } else {
-          throw new Error(`Issue in getting today's question. Inform Administrator immediately!`);
-        }
-      } else if(questionsArr.length && !questionsToDisplay.length) {
-        dispatch(showMessageBox(`Congratulations! You have solved all ${selectedSubject} questions for today for class ${selectedClass}!`, 'success'));
-      } else {
-        throw new Error(`Unhandled scenario for getting today's question. Inform Administrator immediately!`);
-      }
-    } catch(error) {
-      const msg = error.response ? error.response.data : error;
-      setIsQuestionReady(false);
-
-      dispatch(showMessageBox(msg.toString(), 'danger'));
-    }
+  const areSearchValuesValid = () => {
+    return (
+      selectedClass.trim().length &&
+      selectedSubject.trim().length &&
+      selectedChapter.trim().length
+    );
   };
 
-  const handleSelections = (event) => {
-    const key = event.target.id;
-    const newValue = !selectedOptions[key];
-
-    setSelectedOptions({...selectedOptions, [key]: newValue});
+  const getClassOptions = () => {
+    return classes.map(cls => <option key={cls.name}>{cls.name}</option>);
   };
 
-  const getOptionsForm = (showQuestion) => {
-    const optionsKeys = Object.keys(options);
-
-    if(showQuestion) {
-      return(
-        <Form>
-          <h2>Question</h2>
-          <p>{problemStatement}</p>
-          <br />
-          {
-            optionsKeys.map(key => {
-              return (<Form.Group key={key}>
-                <Form.Check
-                  type="checkbox"
-                  label={key + ": " + options[key]}
-                  id={key}
-                  checked={selectedOptions[key]}
-                  onChange={handleSelections}
-                />  
-              </Form.Group>)
-            })
-          }
-  
-          <Button variant="primary" type="submit" onClick={ submitAnswer }>
-            Submit
-          </Button>
-        </Form>
-      );
-    } else {
+  const getSubjectOptions = () => {
+    if (selectedClass.trim() === '') {
       return null;
+    } else {
+      const selectedClassObj = classes.find(cls => cls.name === selectedClass.trim());
+      return selectedClassObj.subjects.map(sub => <option key={sub.name}>{sub.name}</option>);
     }
   };
 
-  const handleClassChange = async (event) => {
-    setClassForQuestions(event.target.value);
-    await getQuestion(event.target.value, subjectForQuestions);
+  const handleClassChange = (event) => {
+    const selectedClass = (event.target.value).trim();
+    if(selectedClass !== '') {
+      dispatch(changeChapterValue(''));
+      dispatch(changeSubjectValue(''));
+      dispatch(changeClassValue(selectedClass));
+    }
   };
 
-  const handleSubjectChange = async (event) => {
-    setSubjectForQuestions(event.target.value);
-    await getQuestion(classForQuestions, event.target.value);
+  const handleSubjectChange = (event) => {
+    const selectedSubject = (event.target.value).trim();
+    if(selectedSubject !== '') {
+      dispatch(changeChapterValue(''));
+      dispatch(changeSubjectValue(selectedSubject));
+    }
   };
 
-  const getQuestion = async (selectedClass, selectedSubject) => {
-    if(selectedClass.trim() !== '' && selectedSubject.trim() !== '') {
-      setIsQuestionReady(true);
-      await getTodaysQuestion(selectedClass, selectedSubject);
+  const handleChapterChange = (event) => {
+    const selectedChapter = (event.target.value).trim();
+    if(selectedChapter !== '') {
+      // dispatch(hidePromptError());
+      dispatch(changeChapterValue(selectedChapter));
+    }
+  };
+
+  const getChapterOptions = () => {
+    if (selectedSubject.trim() === '') {
+      return null;
     } else {
-      console.log('Select proper values for class and subject');
-      setIsQuestionReady(false);
+      const selectedClassObj = classes.find(cls => cls.name === selectedClass.trim());
+      const selectedSubjectObj = selectedClassObj.subjects.find(sub => sub.name === selectedSubject.trim());
+
+    return selectedSubjectObj.chapters.map(chptr => <option key={chptr.number}>{chptr.number}. {chptr.name}</option>);
+    }
+  };
+
+  const getQuestion = () => {
+    if(areSearchValuesValid()) {
+      dispatch(requestGetTodaysQuestions());
+    } else {
+      dispatch(showMessageBox(`Please select valid values for class/subject/chapter.`, 'danger'));
     }
   };
 
@@ -165,44 +106,46 @@ const Question = () => {
     <SecureComponent component={
       <div className="Question">
         <MessageBox />
-        <Container fluid>
+        <Container fluid className="questionPageContainer">
           <Row>
-            <Col sm={1} xs={0} />
-            <Col sm={10} xs={12} className="containerColumn">
-              <Form>
-                <Form.Group as={Row}>
-                  <Form.Label column xs={4}>Select class</Form.Label>
-                  <Col xs={8} sm={6}>
-                    <Form.Control as="select" value={classForQuestions} onChange={handleClassChange}>
-                      <option></option>
-                      <option>5</option>
-                      <option>6</option>
-                      <option>7</option>
-                      <option>8</option>
-                      <option>9</option>
-                      <option>10</option>
-                      <option>11</option>
-                      <option>12</option>
-                    </Form.Control>
-                  </Col>
+            <Col sm={3} xs={12}>
+              <div>
+                <Form.Group>
+                  <Form.Label>Select class</Form.Label>
+                  <Form.Control as="select" value={selectedClass} onChange={handleClassChange}>
+                    <option></option>
+                    {getClassOptions()}
+                  </Form.Control>
                 </Form.Group>
-                <Form.Group as={Row}>
-                  <Form.Label column xs={4}>Select subject</Form.Label>
-                  <Col xs={8} sm={6}>
-                    <Form.Control as="select" value={subjectForQuestions} onChange={handleSubjectChange}>
-                      <option></option>
-                      <option>Mathematics</option>
-                      <option>Physics</option>
-                      <option>Chemistry</option>
-                      <option>Biology</option>
-                    </Form.Control>
-                  </Col>
+                  <Form.Group>
+                  <Form.Label>Select subject</Form.Label>
+                  <Form.Control as="select" value={selectedSubject} onChange={handleSubjectChange}>
+                    <option></option>
+                    {getSubjectOptions()}
+                  </Form.Control>
                 </Form.Group>
-              </Form>
-              <br />
-              {getOptionsForm(isQuestionReady)}
+                <Form.Group>
+                  <Form.Label>Select chapter</Form.Label>
+                  <Form.Control as="select" value={selectedChapter} onChange={handleChapterChange}>
+                    <option></option>
+                    {getChapterOptions()}
+                  </Form.Control>
+                </Form.Group>
+                {loading
+                  ? <Button variant="primary" disabled><Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  /></Button>
+                  : <Button variant="primary" onClick={getQuestion}>Get question</Button>
+                }
+              </div>
             </Col>
-            <Col sm={1} xs={0} />
+            <Col sm={9} xs={12}>
+              <QuestionsPreviewCards />
+            </Col>
           </Row>
         </Container>
       </div>  

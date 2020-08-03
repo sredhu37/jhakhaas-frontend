@@ -3,7 +3,7 @@ body, html {
   color: #757576;
   height: 100%;
   margin: 0;
-  background-color: #E9ECEC;
+  background-color: #F9FCFC;
 }
 
 hr {
@@ -50,6 +50,18 @@ Button {
   padding: 20px;
   background: white;
   text-align: center;
+}
+
+.questionPageContainer {
+  margin: 30px 10px;
+}
+
+.cardQuestion {
+  margin-bottom: 30px;
+  box-shadow: 3px 3px 3px #CCCECF;
+  background-image: url("../static/card-bg.png");
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .profileCard {
