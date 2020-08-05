@@ -12,14 +12,6 @@ import Unauthorized from './Unauthorized';
 
 const App = () => {
   axios.defaults.withCredentials = true;
-  
-  /**
-   * Following lines are added for production security
-   * https://www.chromestatus.com/feature/5088147346030592
-   * https://www.chromestatus.com/feature/5633521622188032
-   * */
-  axios.defaults.headers['SameSite'] = 'None';
-  axios.defaults.headers['Secure'] = true;
 
   return(
     <div>
