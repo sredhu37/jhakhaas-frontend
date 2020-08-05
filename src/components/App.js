@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import axios from 'axios';
 import Question from './Question';
+import QuestionForm from './QuestionHelperComponents/QuestionForm';
 import NavBar from './NavBar';
 import Home from './Home';
 import Dashboard from './Dashboard';
@@ -17,8 +18,11 @@ const App = () => {
       <Router>
         <NavBar />
         <Switch>
-          <Route path="/question">
+          <Route path="/questions">
             <Question />
+          </Route>
+          <Route path="/question-form/:questionId">
+            <QuestionForm />
           </Route>
           <Route path="/profile">
             <Profile />

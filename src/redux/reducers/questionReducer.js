@@ -5,7 +5,12 @@ import {
   QUESTION_CHANGE_CHAPTER_VALUE,
   QUESTION_IS_READY,
   QUESTION_INITIALIZE_QUESTIONS,
+  QUESTION_CHANGE_USERSANSWER,
 } from '../constants';
+
+const getUpdateArray = (arr, indexToUpdate, newValue) => {
+  return arr.map((oldValue, index) => (index === indexToUpdate) ? newValue : oldValue);
+};
 
 const initialState = {
   questions: [{
@@ -23,6 +28,7 @@ const initialState = {
       c: false,
       d: false
     },
+    state: 'UNATTEMPTED',
   }],
   activeTab: 'question1',
   class: '',
@@ -62,6 +68,22 @@ const questionReducer = (state = initialState, action) => {
       return {
         ...state,
         questions: action.payload
+      };
+    case QUESTION_CHANGE_USERSANSWER:
+      const { questionId, option, optionValue } = action.payload;
+      const index = state.questions.findIndex(que => que._id === questionId);
+      const question = state.questions.find(que => que._id === questionId);
+      const newQuestionObj = {
+        ...question,
+        answerByUser: {
+          ...question.answerByUser,
+          [option]: optionValue
+        }
+      };
+
+      return {
+        ...state,
+        questions: getUpdateArray(state.questions, index, newQuestionObj)
       };
     default:
       return state;

@@ -1,11 +1,9 @@
-import React, { useState } from "react";
-import { Container, Row, Col, Form, Button, Spinner } from "react-bootstrap";
+import React, { useEffect } from "react";
+import { Container, Row, Col, Form, Spinner } from "react-bootstrap";
 import SecureComponent from './SecureComponent';
 import MessageBox from './MessageBox';
-import QuestionForm from './QuestionHelperComponents/QuestionForm';
 import QuestionsPreviewCards from './QuestionHelperComponents/QuestionsPreviewCards';
 import { useSelector, useDispatch } from "react-redux";
-import { showMessageBox } from "../redux/actions/messageBoxAction";
 import classes from '../hardCoded';
 import {
   changeClassValue,
@@ -17,20 +15,6 @@ import {
 
 const Question = () => {
   const dispatch = useDispatch();
-
-  // const [ question ] = useState();
-
-
-  const submitAnswer = async (event) => {
-    event.preventDefault();
-
-    try {
-      console.log(`submitAnswerClicked`);
-    }
-    catch(err) {
-      dispatch(showMessageBox(err, 'danger'));
-    }
-  };
 
   const selectedClass = useSelector(state => state.question.class);
   const selectedSubject = useSelector(state => state.question.subject);
@@ -94,13 +78,15 @@ const Question = () => {
     }
   };
 
-  const getQuestion = () => {
-    if(areSearchValuesValid()) {
-      dispatch(requestGetTodaysQuestions());
-    } else {
-      dispatch(showMessageBox(`Please select valid values for class/subject/chapter.`, 'danger'));
-    }
-  };
+  useEffect(() => {
+    const getQuestions = () => {
+      if(areSearchValuesValid()) {
+        dispatch(requestGetTodaysQuestions());
+      }
+    };
+
+    getQuestions();
+  }, [selectedClass, selectedSubject, selectedChapter]);
 
   return (
     <SecureComponent component={
@@ -131,15 +117,9 @@ const Question = () => {
                     {getChapterOptions()}
                   </Form.Control>
                 </Form.Group>
-                {loading
-                  ? <Button variant="primary" disabled><Spinner
-                    as="span"
-                    animation="border"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                  /></Button>
-                  : <Button variant="primary" onClick={getQuestion}>Get question</Button>
+                {loading ?
+                  <Spinner animation="border" variant="success" />
+                  : null
                 }
               </div>
             </Col>

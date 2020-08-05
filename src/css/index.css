@@ -64,6 +64,15 @@ Button {
   background-repeat: no-repeat;
 }
 
+.questionJumbotron {
+  background-color: transparent;
+}
+
+.previewCardImage {
+  height: 50px;
+  width: 50px;
+}
+
 .profileCard {
   margin: 5%;
   padding: 5%;

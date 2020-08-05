@@ -6,6 +6,7 @@ import {
   QUESTION_CHANGE_CHAPTER_VALUE,
   QUESTION_IS_READY,
   QUESTION_INITIALIZE_QUESTIONS,
+  QUESTION_CHANGE_USERSANSWER,
 } from '../constants';
 import { startLoading, stopLoading } from './loadingAction';
 import { showMessageBox } from './messageBoxAction';
@@ -36,6 +37,17 @@ export const changeChapterValue = (chapter) => {
   return {
     type: QUESTION_CHANGE_CHAPTER_VALUE,
     payload: chapter
+  };
+};
+
+export const changeUsersAnswer = (questionId, option, optionValue) => {
+  return {
+    type: QUESTION_CHANGE_USERSANSWER,
+    payload: {
+      questionId,
+      option,
+      optionValue
+    }
   };
 };
 
@@ -80,6 +92,7 @@ export const requestGetTodaysQuestions = () => {
                   c: false,
                   d: false
                 },
+                state: que.state
               }
             ));
 
@@ -94,6 +107,38 @@ export const requestGetTodaysQuestions = () => {
       }
     } catch(error) {
       dispatch(setIsQuestionReady(false));
+      dispatch(showMessageBox(error.toString(), 'danger'));
+    } finally {
+      dispatch(stopLoading());
+    }
+  };
+};
+
+export const requestSubmitAnswer = (questionId, usersAnswer) => {
+  return async(dispatch, getState) => {
+    try {
+      const userId = getState().user.myUser._id;
+
+      const requestObject = {
+        userId,
+        questionId,
+        usersAnswer
+      };
+
+      dispatch(startLoading());
+      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/questions/submit`, requestObject);
+      
+      switch(response.status) {
+        case 200:
+          dispatch(showMessageBox(`Congratulations! Your answer is correct.`, 'success'));
+          break;
+        case 204:
+          dispatch(showMessageBox(`Incorrect answer. Try again!`, 'danger'));
+          break;
+        default:
+          throw new Error(`Unhandled status code while submitting answer!`);
+      }
+    } catch(error) {
       dispatch(showMessageBox(error.toString(), 'danger'));
     } finally {
       dispatch(stopLoading());
