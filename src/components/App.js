@@ -12,6 +12,7 @@ import Unauthorized from './Unauthorized';
 
 const App = () => {
   axios.defaults.withCredentials = true;
+  axios.defaults.headers['SameSite'] = 'None';
 
   return(
     <div>
